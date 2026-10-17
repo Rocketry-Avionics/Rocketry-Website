@@ -1,9 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Globe } from "lucide-react";
 import LinkedInIcon from "@/components/ui/LinkedInIcon";
 import { nav } from "@/content/nav";
 import { site } from "@/content/site";
-import RocketMark from "@/components/ui/RocketMark";
 
 const iconFor: Record<string, typeof Globe | typeof LinkedInIcon> = {
   linkedin: LinkedInIcon,
@@ -16,7 +16,13 @@ export default function Footer() {
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3">
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
-            <RocketMark className="h-9 w-9" />
+            <Image
+              src="/brand/logo.png"
+              alt="Project Rocketry logo"
+              width={36}
+              height={36}
+              className="h-9 w-9"
+            />
             <span className="font-display text-sm font-bold tracking-wide text-paper">
               {site.fullName}
             </span>

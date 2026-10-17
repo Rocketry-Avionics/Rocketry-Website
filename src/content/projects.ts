@@ -16,7 +16,6 @@ export const avionicsProjects: AvionicsProject[] = [
     ],
     tags: ["Altium", "PCB Design", "Embedded", "Sensors"],
     icon: "cpu",
-    mediaNote: null,
     timeline: [
       {
         label: "v0 flight computer working",
@@ -67,7 +66,6 @@ export const avionicsProjects: AvionicsProject[] = [
     ],
     tags: ["C/C++", "Filtering", "Real-time", "SD Logging"],
     icon: "code",
-    mediaNote: null,
     timeline: [
       {
         label: "v0 data collection firmware working",
@@ -105,7 +103,12 @@ export const avionicsProjects: AvionicsProject[] = [
     ],
     tags: ["RF", "Telemetry", "Integration", "Test Rigs"],
     icon: "radio",
-    mediaNote: "RF module + antenna rig from field testing. Photos coming soon.",
+    media: [
+      {
+        kind: "placeholder",
+        note: "Photos of the v0 radio protoboard and antenna rig will be added here.",
+      },
+    ],
   },
   {
     id: "website",
@@ -122,7 +125,6 @@ export const avionicsProjects: AvionicsProject[] = [
     ],
     tags: ["Next.js", "Three.js", "Tailwind", "TypeScript"],
     icon: "globe",
-    mediaNote: null,
     media: [
       {
         kind: "placeholder",
@@ -145,7 +147,6 @@ export const avionicsProjects: AvionicsProject[] = [
     ],
     tags: ["Unity", "Reinforcement Learning", "ONNX", "TFLite"],
     icon: "brain",
-    mediaNote: null,
     timeline: [
       {
         label: "Unity environment scaffolded",
@@ -191,6 +192,11 @@ export const avionicsProjects: AvionicsProject[] = [
     ],
     tags: ["LinkedIn", "Community"],
     icon: "megaphone",
-    mediaNote: null,
+    media: [
+      {
+        kind: "placeholder",
+        note: "Photos from worksessions and events will be added here.",
+      },
+    ],
   },
 ];

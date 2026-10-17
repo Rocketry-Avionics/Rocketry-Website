@@ -50,7 +50,6 @@ export interface AvionicsProject {
   points: string[];
   tags: string[];
   icon: "cpu" | "code" | "radio" | "globe" | "brain" | "megaphone";
-  mediaNote: string | null;
   timeline?: TimelineEntry[];
   media?: MediaSlide[];
 }

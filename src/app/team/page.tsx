@@ -98,7 +98,7 @@ export default function TeamPage() {
                 Subsystem leads
               </p>
               <h3 className="font-display text-2xl font-bold text-paper">
-                One project, three leads
+                One project, four leads
               </h3>
             </div>
             <div className="grid gap-4 md:grid-cols-3">

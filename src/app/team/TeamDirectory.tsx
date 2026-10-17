@@ -12,15 +12,25 @@ interface SelectableMember {
   onSelect: (member: TeamMember) => void;
 }
 
-function MemberCard({ member, onSelect }: SelectableMember & { member: TeamMember }) {
+function MemberCard({
+  member,
+  onSelect,
+  compact = false,
+}: SelectableMember & { member: TeamMember; compact?: boolean }) {
   const style = subsystemStyle[member.subsystem];
   return (
     <button
       type="button"
       onClick={() => onSelect(member)}
-      className="group flex h-full flex-col items-center gap-3 rounded-2xl border border-line bg-surface p-5 text-center transition-colors hover:border-flame/60"
+      className={`group flex h-full flex-col items-center gap-3 rounded-2xl border border-line bg-surface text-center transition-colors hover:border-flame/60 ${
+        compact ? "p-4" : "p-5"
+      }`}
     >
-      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-xl border border-line">
+      <div
+        className={`relative w-full overflow-hidden rounded-xl border border-line ${
+          compact ? "aspect-square" : "aspect-[4/5]"
+        }`}
+      >
         <MemberPhoto member={member} sizes="(max-width: 640px) 45vw, 220px" />
       </div>
       <div>

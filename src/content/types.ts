@@ -37,10 +37,19 @@ export interface AvionicsProject {
 
 export type SubsystemKey = "lead" | "avionics" | "structural" | "propulsion";
 
+export interface Dossier {
+  gmail: string;
+  linkedin?: string;
+  twitter?: string;
+  instagram?: string;
+}
+
 export interface TeamMember {
   name: string | null;
   role: string;
   subsystem: SubsystemKey;
+  photo?: string | null;
+  dossier?: Dossier;
 }
 
 export interface LeadGroup {

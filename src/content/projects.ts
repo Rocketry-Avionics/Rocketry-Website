@@ -139,7 +139,37 @@ export const avionicsProjects: AvionicsProject[] = [
     ],
     tags: ["Unity", "Reinforcement Learning", "ONNX", "TFLite"],
     icon: "brain",
-    mediaNote: "Unity 6 scene with the rocket, spawn point and landing pad. Media coming soon.",
+    mediaNote: null,
+    timeline: [
+      {
+        label: "Unity environment scaffolded",
+        detail: "Rocket model, spawn point and landing pad set up in Unity 6.",
+        status: "Done",
+      },
+      {
+        label: "RL agent training",
+        detail: "Custom reinforcement learning agent learning propulsive landing.",
+        status: "Planned",
+      },
+      {
+        label: "ONNX / TFLite export and onboard deployment",
+        detail:
+          "Policy weights exported and deployed on the flight MCU once the vehicle can support it.",
+        status: "Planned",
+      },
+    ],
+    media: [
+      {
+        kind: "image",
+        src: "/media/avionics/unity-landing-env.jpg",
+        alt: "Unity 6 scene with the rocket model, spawn point and landing pad",
+        caption: "Unity 6 environment: rocket, spawn point and landing pad",
+      },
+      {
+        kind: "placeholder",
+        note: "Training runs and agent clips will be added as the RL work progresses.",
+      },
+    ],
   },
   {
     id: "outreach",

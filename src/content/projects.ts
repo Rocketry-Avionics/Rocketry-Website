@@ -123,6 +123,12 @@ export const avionicsProjects: AvionicsProject[] = [
     tags: ["Next.js", "Three.js", "Tailwind", "TypeScript"],
     icon: "globe",
     mediaNote: null,
+    media: [
+      {
+        kind: "placeholder",
+        note: "This very website. Media and milestones here will be refreshed once we deploy.",
+      },
+    ],
   },
   {
     id: "rl-landing-sim",

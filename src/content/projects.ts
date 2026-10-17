@@ -1,0 +1,105 @@
+import type { AvionicsProject } from "./types";
+
+export const avionicsProjects: AvionicsProject[] = [
+  {
+    id: "hardware-core",
+    index: "01",
+    title: "Hardware Core",
+    status: "Active",
+    summary:
+      "A sophisticated, custom 4-layer PCB designed in Altium to carry a highly efficient and powerful microcontroller plus the sensor suite for flight data collection.",
+    points: [
+      "4-layer board design in Altium",
+      "Microcontroller + IMU/barometer sensor suite for flight data acquisition",
+      "Power management for the whole avionics stack",
+      "Evolving from our working Teensy 4.1 flight computer prototypes",
+    ],
+    tags: ["Altium", "PCB Design", "Embedded", "Sensors"],
+    icon: "cpu",
+    mediaNote: "v0 flight computer — Teensy 4.1 on a custom carrier board. Photos coming soon.",
+  },
+  {
+    id: "software-core",
+    index: "02",
+    title: "Software Core",
+    status: "Active",
+    summary:
+      "The logic that drives the custom flight controller: collect data, preprocess it with filters, run real-time flight decisions, and record everything for post-flight analysis.",
+    points: [
+      "Data acquisition from the onboard sensor suite",
+      "Preprocessing: filtering and sensor fusion",
+      "Real-time processing: TVC control, parachute deployment events",
+      "Post-processing: SD card logging, metrics, flight plots",
+    ],
+    tags: ["C/C++", "Filtering", "Real-time", "SD Logging"],
+    icon: "code",
+    mediaNote: null,
+  },
+  {
+    id: "communication-systems",
+    index: "03",
+    title: "Communication Systems",
+    status: "Active",
+    summary:
+      "A two-way link between the rocket and the base station — not just downlinking data, but sending commands up. Separate hardware and software tracks working with Hardware Core on integration.",
+    points: [
+      "Hardware track: comm modules, integrated into the main processing PCB",
+      "Software track: custom test logic to stress modules and find edge cases",
+      "Data collection and transfer in both directions",
+      "Base station side of the link",
+    ],
+    tags: ["RF", "Telemetry", "Integration", "Test Rigs"],
+    icon: "radio",
+    mediaNote: "RF module + antenna rig from field testing. Photos coming soon.",
+  },
+  {
+    id: "website",
+    index: "04",
+    title: "Website & Digital Presence",
+    status: "Active",
+    summary:
+      "This website — designed and maintained in-house by avionics members. The public face of the project for outreach, recruiting and sponsors.",
+    points: [
+      "Next.js + TypeScript + Tailwind CSS",
+      "Interactive Three.js launch zone built in-house",
+      "Performance-budgeted to run on cheap mobile devices",
+      "Content fully data-driven so updates never touch UI code",
+    ],
+    tags: ["Next.js", "Three.js", "Tailwind", "TypeScript"],
+    icon: "globe",
+    mediaNote: null,
+  },
+  {
+    id: "rl-landing-sim",
+    index: "05",
+    title: "Self-Landing RL Simulation",
+    status: "In Progress",
+    summary:
+      "A Unity-based earth environment where the rocket is modeled as close as possible to what the structural team provides, and a custom RL agent learns propulsive landing. Policy weights would be exported via ONNX or TFLite for eventual deployment on the microcontroller.",
+    points: [
+      "Unity environment: rocket model, spawn point, landing pad",
+      "Custom reinforcement learning agent for propulsive landing",
+      "ONNX / TFLite export of trained weights — planned",
+      "Onboard deployment once the vehicle can support it — planned",
+    ],
+    tags: ["Unity", "Reinforcement Learning", "ONNX", "TFLite"],
+    icon: "brain",
+    mediaNote: "Unity 6 scene with the rocket, spawn point and landing pad. Media coming soon.",
+  },
+  {
+    id: "outreach",
+    index: "06",
+    title: "Outreach",
+    status: "Active",
+    summary:
+      "Run by the leads and core members: public build logs, updates and event presence. Crew members contribute technically and help by reposting what we publish.",
+    points: [
+      "Public updates on LinkedIn",
+      "Build logs and milestones",
+      "Recruiting and campus presence",
+    ],
+    tags: ["LinkedIn", "Community"],
+    icon: "megaphone",
+    mediaNote: null,
+  },
+];

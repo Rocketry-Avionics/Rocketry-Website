@@ -1,45 +1,31 @@
-import type { LeadGroup, TeamMember } from "./types";
+import type { TeamMember } from "./types";
 
 export const team = {
   note: "Team photos coming soon. The avionics roster: leads, core and crew: reflects our public announcements. Structural and propulsion rosters will be added once confirmed.",
   leads: [
     {
-      id: "avionics",
-      title: "Avionics",
-      members: [
-        {
-          name: "Vaiebhav Shreevarshan R",
-          role: "Avionics Co-Lead",
-          subsystem: "avionics",
-          photo: null,
-          dossier: {
-            gmail: "",
-            linkedin: "https://in.linkedin.com/in/vaiebhav-shreevarshan-r-47b400326",
-          },
-        },
-        {
-          name: "Harshvardhan Jadhavrao",
-          role: "Avionics Co-Lead",
-          subsystem: "avionics",
-          photo: null,
-          dossier: {
-            gmail: "",
-            linkedin: "https://in.linkedin.com/in/harshvardhan-jadhavrao-7642b32b0",
-          },
-        },
-      ],
+      name: "Vaiebhav Shreevarshan R",
+      role: "Avionics Co-Lead",
+      subsystem: "avionics",
+      photo: null,
+      dossier: {
+        gmail: "",
+        linkedin: "https://in.linkedin.com/in/vaiebhav-shreevarshan-r-47b400326",
+      },
     },
     {
-      id: "structural",
-      title: "Structural",
-      members: [{ name: null, role: "Structural Lead", subsystem: "structural" }],
+      name: "Harshvardhan Jadhavrao",
+      role: "Avionics Co-Lead",
+      subsystem: "avionics",
+      photo: null,
+      dossier: {
+        gmail: "",
+        linkedin: "https://in.linkedin.com/in/harshvardhan-jadhavrao-7642b32b0",
+      },
     },
-    {
-      id: "propulsion",
-      title: "Propulsion",
-      members: [{ name: null, role: "Propulsion Lead", subsystem: "propulsion" }],
-    },
-  ] as LeadGroup[],
+    { name: null, role: "Structural Lead", subsystem: "structural" },
+    { name: null, role: "Propulsion Lead", subsystem: "propulsion" },
+  ] as TeamMember[],
   avionicsCore: [
     {
       name: "Sushan Gopu",

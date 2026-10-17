@@ -37,7 +37,7 @@ export default function AvionicsDirectory() {
           <article
             key={project.id}
             id={project.id}
-            className="scroll-mt-24 rounded-2xl border border-line bg-surface p-6 sm:p-8"
+            className="scroll-mt-24 rounded-2xl border border-line bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-flame/30 sm:p-8"
           >
             <div className="grid gap-8 md:grid-cols-[1fr_240px]">
               <div className="flex flex-col gap-4">

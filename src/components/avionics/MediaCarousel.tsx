@@ -17,14 +17,14 @@ export default function MediaCarousel({ slides }: { slides: MediaSlide[] }) {
 
   return (
     <div>
-      <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-line bg-ink">
+      <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-line bg-[radial-gradient(ellipse_at_center,#2f2d2b,#1e1d1c)]">
         {slide.kind === "image" && slide.src && (
           <Image
             src={slide.src}
             alt={slide.alt ?? ""}
             fill
             sizes="(max-width: 768px) 92vw, 640px"
-            className="object-cover"
+            className="object-contain"
           />
         )}
         {slide.kind === "pcb" && <PcbPanel />}

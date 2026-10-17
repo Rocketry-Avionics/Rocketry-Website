@@ -156,10 +156,10 @@ export default function DossierModal({ member, onClose }: DossierModalProps) {
           aria-label="Enlarged photo"
           onClick={() => setEnlarged(false)}
         >
-          <div className="relative aspect-[4/5] w-[min(80vw,64vh)] overflow-hidden rounded-2xl border border-line">
+          <div className="relative aspect-[4/5] w-[min(85vw,56vh)] overflow-hidden rounded-2xl border border-line">
             <MemberPhoto member={member} sizes="90vw" />
           </div>
-          <p className="text-xs text-muted">Click anywhere to close</p>
+          <p className="pb-2 text-xs text-muted">Click anywhere to close</p>
         </div>
       )}
     </div>

@@ -14,6 +14,7 @@ import {
 import { avionicsProjects } from "@/content/projects";
 import type { AvionicsProject } from "@/content/types";
 import StatusBadge from "@/components/ui/StatusBadge";
+import MiniTimeline from "@/components/avionics/MiniTimeline";
 import ProjectDossier from "@/components/avionics/ProjectDossier";
 
 const iconFor: Record<string, LucideIcon> = {
@@ -75,21 +76,25 @@ export default function AvionicsDirectory() {
                 </div>
               </div>
 
-              <div className="flex min-h-40 flex-col items-center justify-center gap-4 rounded-xl border border-line bg-[radial-gradient(ellipse_at_center,rgba(61,111,158,0.12),transparent_70%)] p-6 text-center">
-                <Icon className="h-10 w-10 text-sky" aria-hidden="true" />
+              <div className="flex min-h-40 flex-col justify-center gap-4 rounded-xl border border-line bg-[radial-gradient(ellipse_at_center,rgba(61,111,158,0.12),transparent_70%)] p-5">
+                {project.timeline && project.timeline.length > 0 ? (
+                  <div className="flex flex-col gap-3">
+                    <p className="text-center font-display text-[10px] font-semibold uppercase tracking-[0.25em] text-muted">
+                      Where it stands
+                    </p>
+                    <MiniTimeline entries={project.timeline} />
+                  </div>
+                ) : (
+                  <Icon className="mx-auto h-10 w-10 text-sky" aria-hidden="true" />
+                )}
                 <button
                   type="button"
                   onClick={() => setSelected(project)}
-                  className="inline-flex items-center gap-2 rounded-full border border-flame/50 bg-flame/10 px-4 py-2 font-display text-xs font-semibold text-flame transition-colors hover:bg-flame/20"
+                  className="mx-auto inline-flex items-center gap-2 rounded-full border border-flame/50 bg-flame/10 px-4 py-2 font-display text-xs font-semibold text-flame transition-colors hover:bg-flame/20"
                 >
                   <FolderOpen className="h-3.5 w-3.5" aria-hidden="true" />
                   Open project dossier
                 </button>
-                {project.timeline && project.timeline.length > 0 && (
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted">
-                    {project.timeline.length} timeline entries inside
-                  </p>
-                )}
               </div>
             </div>
           </article>

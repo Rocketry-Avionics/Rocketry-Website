@@ -11,6 +11,41 @@
   --color-flame: #e05252;
   --color-sky: #3d6f9e;
   --color-amber: #f0a840;
+
+  --animate-trace: trace-pulse 4s linear infinite;
+  --animate-line: line-reveal 0.5s ease both;
+  --animate-blink: cursor-blink 1.1s step-end infinite;
+}
+
+@keyframes trace-pulse {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -192;
+  }
+}
+
+@keyframes line-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cursor-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
 }
 
 @theme inline {

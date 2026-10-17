@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { avionicsProjects } from "@/content/projects";
 import SectionHeading from "@/components/ui/SectionHeading";
+import GitHubIcon from "@/components/ui/GitHubIcon";
 import AvionicsDirectory from "./AvionicsDirectory";
 
 export const metadata: Metadata = {
@@ -32,6 +33,17 @@ export default function AvionicsPage() {
               </a>
             ))}
           </nav>
+          <div className="mt-6">
+            <a
+              href="https://github.com/Rocketry-Avionics"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-5 py-2.5 font-display text-sm font-semibold text-paper transition-colors hover:border-flame/60 hover:text-flame"
+            >
+              <GitHubIcon className="h-4 w-4" />
+              Rocketry-Avionics on GitHub
+            </a>
+          </div>
         </div>
       </section>
 

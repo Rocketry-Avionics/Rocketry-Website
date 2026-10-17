@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { nav } from "@/content/nav";
 import { site } from "@/content/site";
-import RocketMark from "@/components/ui/RocketMark";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -19,7 +19,13 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 border-b border-line/60 bg-ink/80 backdrop-blur">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6" aria-label="Main">
         <Link href="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
-          <RocketMark className="h-8 w-8" />
+          <Image
+            src="/brand/logo.png"
+            alt="Project Rocketry logo"
+            width={32}
+            height={32}
+            className="h-8 w-8"
+          />
           <span className="flex flex-col leading-tight">
             <span className="font-display text-sm font-bold tracking-wide text-paper">
               {site.name}

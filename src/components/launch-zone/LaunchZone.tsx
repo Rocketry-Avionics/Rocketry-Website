@@ -1,9 +1,9 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { useDeviceTier } from "@/lib/hooks/useDeviceTier";
 import { useReducedMotion } from "@/lib/hooks/useReducedMotion";
-import RocketMark from "@/components/ui/RocketMark";
 
 const RocketCanvas = dynamic(() => import("./RocketCanvas"), {
   ssr: false,
@@ -22,7 +22,13 @@ export default function LaunchZone() {
     <div className="relative h-full w-full overflow-hidden rounded-2xl border border-line bg-gradient-to-b from-charcoal via-ink to-ink">
       {reduced ? (
         <div className="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
-          <RocketMark className="h-20 w-20" />
+          <Image
+            src="/brand/logo.png"
+            alt="Project Rocketry logo"
+            width={80}
+            height={80}
+            className="h-20 w-20"
+          />
           <p className="max-w-56 text-sm text-muted">
             Interactive launch zone is disabled by your reduced-motion preference.
           </p>

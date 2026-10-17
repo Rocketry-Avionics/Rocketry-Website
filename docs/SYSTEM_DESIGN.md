@@ -32,7 +32,7 @@ Audiences: student recruits (freshers), sponsors, SEDS / fest visitors.
 |---|---|---|
 | `/` | Hero + interactive **Launch Zone**, mission, stats, subsystem teasers, CTA | Build |
 | `/avionics` | Single page, anchored sections for the 6 projects (below) | Build |
-| `/team` | Subsystem leads in a 2x2 grid (avionics has two co-leads, no single project lead), avionics core and crew grids. Every member card is clickable and opens a dossier modal: enlargeable photo (placeholder until real photos), Gmail (compulsory slot), LinkedIn/Twitter/Instagram shown only when filled | Build |
+| `/team` | Subsystem leads in a compact 2x2 grid (avionics has two co-leads, no single project lead), avionics core in a single five-column row, crew in a 4x4 grid. Every member card is clickable and opens a dossier modal: enlargeable photo (placeholder until real photos), Gmail (compulsory slot), LinkedIn/Twitter/Instagram shown only when filled. Close button lives in a header row so it never overlaps the photo | Build |
 | `/contact` | Web3Forms/Formspree form + socials (LinkedIn) + email | Build |
 | `/structural` | **Parked**: no page until official info is provided | Parked |
 | `/propulsion` | **Parked**: no page until official info is provided | Parked |

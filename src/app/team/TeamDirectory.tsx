@@ -94,7 +94,7 @@ export default function TeamDirectory() {
             Avionics crew
           </p>
           <h3 className="font-display text-2xl font-bold text-paper">
-            Learning and building
+            Learning, building and contributing
           </h3>
         </div>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">

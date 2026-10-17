@@ -23,6 +23,7 @@ export const metadata: Metadata = {
     template: `%s · ${site.fullName}`,
   },
   description: site.description,
+  manifest: "/site.webmanifest",
 };
 
 export const viewport: Viewport = {

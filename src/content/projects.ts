@@ -68,6 +68,27 @@ export const avionicsProjects: AvionicsProject[] = [
     tags: ["C/C++", "Filtering", "Real-time", "SD Logging"],
     icon: "code",
     mediaNote: null,
+    timeline: [
+      {
+        label: "v0 data collection firmware working",
+        detail:
+          "Fully working code collecting MPU6050 and BMP280 data over Teensy 4.1 on the v0 board.",
+        status: "Done",
+      },
+      {
+        label: "Flight pipeline growing",
+        detail:
+          "Filtering, real-time control (TVC, deployment events) and post-processing, moving toward the v1 Portenta H7 board.",
+        status: "In Progress",
+      },
+    ],
+    media: [
+      {
+        kind: "code",
+        caption:
+          "Representative of the v0 data collection loop: MPU6050 + BMP280 over Teensy 4.1",
+      },
+    ],
   },
   {
     id: "communication-systems",

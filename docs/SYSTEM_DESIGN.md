@@ -21,6 +21,8 @@ Audiences: student recruits (freshers), sponsors, SEDS / fest visitors.
    - Page content from typed data files: text/photo updates never touch UI code.
 3. **Performance first.** Must run smoothly on cheap Androids / low-power devices.
 4. **Responsive by construction.** Fluid layouts, no fixed-pixel assumptions.
+5. **No em dashes.** Ever, in UI copy, content files or docs. Use commas, colons or
+   parentheses and keep the sentence flowing.
 
 ---
 
@@ -30,7 +32,7 @@ Audiences: student recruits (freshers), sponsors, SEDS / fest visitors.
 |---|---|---|
 | `/` | Hero + interactive **Launch Zone**, mission, stats, subsystem teasers, CTA | Build |
 | `/avionics` | Single page, anchored sections for the 6 projects (below) | Build |
-| `/team` | Hierarchy/tree view, placeholder avatars now, real photos later | Build |
+| `/team` | Subsystem leads in a 2x2 grid (avionics has two co-leads, no single project lead), avionics core and crew grids. Every member card is clickable and opens a dossier modal: enlargeable photo (placeholder until real photos), Gmail (compulsory slot), LinkedIn/Twitter/Instagram shown only when filled | Build |
 | `/contact` | Web3Forms/Formspree form + socials (LinkedIn) + email | Build |
 | `/structural` | **Parked**: no page until official info is provided | Parked |
 | `/propulsion` | **Parked**: no page until official info is provided | Parked |
@@ -103,8 +105,10 @@ src/content/
   nav.ts         nav order, labels, anchors
   subsystems.ts  subsystem summaries + status badges
   projects.ts    avionics projects (id, title, blurb, tags, status, media)
-  team.ts        hierarchy data: subsystem leads (avionics has two co-leads,
-                 no single project lead) → avionics core → avionics crew
+  team.ts        subsystem leads (flat list, 2x2 order: avionics co-lead 1,
+                 avionics co-lead 2, structural, propulsion), avionics core,
+                 avionics crew. Each member: photo (null = placeholder) and
+                 optional dossier { gmail required, socials only when filled }
   stats.ts       numbers for the home page (only real ones)
   launchZone.ts  physics/bounds/particles config, per device tier
 ```

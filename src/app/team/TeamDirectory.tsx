@@ -60,9 +60,14 @@ export default function TeamDirectory() {
             One project, four leads
           </h3>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="mx-auto grid w-full max-w-2xl gap-4 sm:grid-cols-2">
           {team.leads.map((member) => (
-            <MemberCard key={member.name ?? member.role} member={member} onSelect={setSelected} />
+            <MemberCard
+              key={member.name ?? member.role}
+              member={member}
+              onSelect={setSelected}
+              compact
+            />
           ))}
         </div>
       </div>

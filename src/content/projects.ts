@@ -16,7 +16,41 @@ export const avionicsProjects: AvionicsProject[] = [
     ],
     tags: ["Altium", "PCB Design", "Embedded", "Sensors"],
     icon: "cpu",
-    mediaNote: "v0 flight computer: Teensy 4.1 on a custom carrier board. Photos coming soon.",
+    mediaNote: null,
+    timeline: [
+      {
+        label: "v0 flight computer working",
+        detail:
+          "Fully working 2-layer PCB: Teensy 4.1 + BMP280 + MPU6050, with voltage regulator circuits. No communications on this board.",
+        status: "Done",
+      },
+      {
+        label: "v1 flight computer in design",
+        detail:
+          "4-layer PCB in Altium around the Portenta H7 with a wider, more sophisticated sensor suite (sensors to be announced).",
+        status: "In Progress",
+      },
+    ],
+    media: [
+      {
+        kind: "pcb",
+        caption:
+          "Stylized board view: Teensy 4.1 + BMP280 + MPU6050 with regulator circuits",
+      },
+      {
+        kind: "image",
+        src: "/media/avionics/flight-computer-v0.jpg",
+        alt: "v0 flight computer: Teensy 4.1 on the custom carrier board",
+        caption: "v0 flight computer: Teensy 4.1 on the custom carrier board",
+      },
+      {
+        kind: "image",
+        src: "/media/avionics/flight-computer-v0-field.jpg",
+        alt: "v0 flight computer stack with a separate radio protoboard and antenna during outdoor testing",
+        caption:
+          "v0 stack during outdoor testing, with a separate radio protoboard and antenna",
+      },
+    ],
   },
   {
     id: "software-core",

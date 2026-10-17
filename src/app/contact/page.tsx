@@ -8,7 +8,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Reach Project Rocketry BITS Goa — for recruits, collaborators and sponsors.",
+    "Reach Project Rocketry BITS Goa: for recruits, collaborators and sponsors.",
 };
 
 export default function ContactPage() {
@@ -19,7 +19,7 @@ export default function ContactPage() {
           <SectionHeading
             eyebrow="Contact"
             title="Say hello"
-            description="Recruits, collaborators, sponsors — we read everything. Reach us through the form or directly on LinkedIn."
+            description="Recruits, collaborators, sponsors: we read everything. Reach us through the form or directly on LinkedIn."
           />
           <ContactForm />
         </div>

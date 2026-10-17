@@ -121,12 +121,12 @@ export default function FreeFlight({ className = "" }: { className?: string }) {
 
             {hud.landed && (
               <p className="pointer-events-none absolute left-1/2 top-4 -translate-x-1/2 rounded-full border border-sky/50 bg-sky/15 px-4 py-1 font-display text-sm font-semibold text-sky">
-                LANDED — nice flying
+                LANDED: nice flying
               </p>
             )}
             {hud.crashed && (
               <p className="pointer-events-none absolute left-1/2 top-4 -translate-x-1/2 rounded-full border border-flame/50 bg-flame/15 px-4 py-1 font-display text-sm font-semibold text-flame">
-                CRASHED — hit reset and try again
+                CRASHED: hit reset and try again
               </p>
             )}
 
@@ -167,8 +167,8 @@ export default function FreeFlight({ className = "" }: { className?: string }) {
                 </button>
               </div>
               <div className="hidden text-right text-xs text-muted sm:block">
-                <p>W / ↑ / Space — thrust</p>
-                <p>A / D — rotate</p>
+                <p>W / ↑ / Space: thrust</p>
+                <p>A / D: rotate</p>
               </div>
               <button
                 type="button"

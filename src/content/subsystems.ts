@@ -27,7 +27,7 @@ export const subsystems: Subsystem[] = [
       "Aerodynamics and stability",
     ],
     href: null,
-    statusNote: "Page coming soon — official details pending",
+    statusNote: "Page coming soon: official details pending",
   },
   {
     id: "propulsion",
@@ -41,6 +41,6 @@ export const subsystems: Subsystem[] = [
       "Static fire testing",
     ],
     href: null,
-    statusNote: "Page coming soon — official details pending",
+    statusNote: "Page coming soon: official details pending",
   },
 ];

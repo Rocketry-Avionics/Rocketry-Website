@@ -16,7 +16,7 @@ export const avionicsProjects: AvionicsProject[] = [
     ],
     tags: ["Altium", "PCB Design", "Embedded", "Sensors"],
     icon: "cpu",
-    mediaNote: "v0 flight computer — Teensy 4.1 on a custom carrier board. Photos coming soon.",
+    mediaNote: "v0 flight computer: Teensy 4.1 on a custom carrier board. Photos coming soon.",
   },
   {
     id: "software-core",
@@ -41,7 +41,7 @@ export const avionicsProjects: AvionicsProject[] = [
     title: "Communication Systems",
     status: "Active",
     summary:
-      "A two-way link between the rocket and the base station — not just downlinking data, but sending commands up. Separate hardware and software tracks working with Hardware Core on integration.",
+      "A two-way link between the rocket and the base station: not just downlinking data, but sending commands up. Separate hardware and software tracks working with Hardware Core on integration.",
     points: [
       "Hardware track: comm modules, integrated into the main processing PCB",
       "Software track: custom test logic to stress modules and find edge cases",
@@ -58,7 +58,7 @@ export const avionicsProjects: AvionicsProject[] = [
     title: "Website & Digital Presence",
     status: "Active",
     summary:
-      "This website — designed and maintained in-house by avionics members. The public face of the project for outreach, recruiting and sponsors.",
+      "This website: designed and maintained in-house by avionics members. The public face of the project for outreach, recruiting and sponsors.",
     points: [
       "Next.js + TypeScript + Tailwind CSS",
       "Interactive Three.js launch zone built in-house",
@@ -79,8 +79,8 @@ export const avionicsProjects: AvionicsProject[] = [
     points: [
       "Unity environment: rocket model, spawn point, landing pad",
       "Custom reinforcement learning agent for propulsive landing",
-      "ONNX / TFLite export of trained weights — planned",
-      "Onboard deployment once the vehicle can support it — planned",
+      "ONNX / TFLite export of trained weights: planned",
+      "Onboard deployment once the vehicle can support it: planned",
     ],
     tags: ["Unity", "Reinforcement Learning", "ONNX", "TFLite"],
     icon: "brain",

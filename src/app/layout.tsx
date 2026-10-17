@@ -19,7 +19,7 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: {
-    default: `${site.fullName} — ${site.org}`,
+    default: `${site.fullName}: ${site.org}`,
     template: `%s · ${site.fullName}`,
   },
   description: site.description,

@@ -35,18 +35,21 @@ export interface AvionicsProject {
   mediaNote: string | null;
 }
 
-export type SubsystemKey = "lead" | "avionics" | "structural" | "propulsion";
+export type SubsystemKey = "avionics" | "structural" | "propulsion";
+
+export interface Dossier {
+  gmail: string;
+  linkedin?: string;
+  twitter?: string;
+  instagram?: string;
+}
 
 export interface TeamMember {
   name: string | null;
   role: string;
   subsystem: SubsystemKey;
-}
-
-export interface LeadGroup {
-  id: Exclude<SubsystemKey, "lead">;
-  title: string;
-  members: TeamMember[];
+  photo?: string | null;
+  dossier?: Dossier;
 }
 
 export interface StatItem {

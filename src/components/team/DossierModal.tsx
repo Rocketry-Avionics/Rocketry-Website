@@ -53,15 +53,17 @@ export default function DossierModal({ member, onClose }: DossierModalProps) {
         className="absolute inset-0 cursor-default bg-ink/85 backdrop-blur-sm"
       />
 
-      <div className="relative max-h-[85vh] w-full max-w-md overflow-y-auto rounded-2xl border border-line bg-surface p-6">
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Close dossier"
-          className="absolute right-4 top-4 rounded-full border border-line bg-ink/70 p-2 text-muted transition-colors hover:text-paper"
-        >
-          <X className="h-4 w-4" aria-hidden="true" />
-        </button>
+      <div className="relative max-h-[85vh] w-full max-w-md overflow-y-auto rounded-2xl border border-line bg-surface p-5 sm:p-6">
+        <div className="mb-4 flex items-center justify-end">
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close dossier"
+            className="rounded-full border border-line bg-ink/70 p-2 text-muted transition-colors hover:text-paper"
+          >
+            <X className="h-4 w-4" aria-hidden="true" />
+          </button>
+        </div>
 
         <button
           type="button"

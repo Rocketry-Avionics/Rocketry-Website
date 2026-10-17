@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { team } from "@/content/team";
-import type { LeadGroup, TeamMember } from "@/content/types";
+import type { TeamMember } from "@/content/types";
 import { subsystemStyle } from "@/lib/subsystemStyle";
 import { site } from "@/content/site";
 import DossierModal from "@/components/team/DossierModal";
@@ -36,26 +36,6 @@ function MemberCard({ member, onSelect }: SelectableMember & { member: TeamMembe
   );
 }
 
-function LeadGroupCard({ group, onSelect }: { group: LeadGroup } & SelectableMember) {
-  const style = subsystemStyle[group.id];
-  return (
-    <div className="flex h-full flex-col gap-4 rounded-2xl border border-line bg-surface p-6">
-      <p className={`text-center font-display text-xs font-semibold uppercase tracking-[0.2em] ${style.label}`}>
-        {group.title}
-      </p>
-      <div
-        className={`grid flex-1 items-start gap-3 ${
-          group.members.length > 1 ? "sm:grid-cols-2" : "grid-cols-1"
-        }`}
-      >
-        {group.members.map((member) => (
-          <MemberCard key={member.name ?? member.role} member={member} onSelect={onSelect} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export default function TeamDirectory() {
   const [selected, setSelected] = useState<TeamMember | null>(null);
 
@@ -70,13 +50,9 @@ export default function TeamDirectory() {
             One project, four leads
           </h3>
         </div>
-        <div className="grid gap-4 md:grid-cols-3">
-          {team.leads.map((group) => (
-            <LeadGroupCard
-              key={group.id}
-              group={group}
-              onSelect={setSelected}
-            />
+        <div className="grid gap-4 sm:grid-cols-2">
+          {team.leads.map((member) => (
+            <MemberCard key={member.name ?? member.role} member={member} onSelect={setSelected} />
           ))}
         </div>
       </div>

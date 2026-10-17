@@ -1,6 +1,6 @@
-# Project Rocketry BITS Goa — Website System Design
+# Project Rocketry BITS Goa: Website System Design
 
-**Version:** 0.2 — v1 implemented locally, not deployed
+**Version:** 0.2: v1 implemented locally, not deployed
 **Status:** Built; content pending official club info (mission text, media, rosters)
 **Owner:** Avionics Lead, Project Rocketry BITS Goa (SEDS Celestia)
 
@@ -18,7 +18,7 @@ Audiences: student recruits (freshers), sponsors, SEDS / fest visitors.
 2. **Everything variable.** No hardcoded magic numbers anywhere:
    - Design tokens (colors, spacing, type scale) as CSS variables.
    - Launch Zone physics/bounds/particle counts from a typed config, tiered by device.
-   - Page content from typed data files — text/photo updates never touch UI code.
+   - Page content from typed data files: text/photo updates never touch UI code.
 3. **Performance first.** Must run smoothly on cheap Androids / low-power devices.
 4. **Responsive by construction.** Fluid layouts, no fixed-pixel assumptions.
 
@@ -32,27 +32,27 @@ Audiences: student recruits (freshers), sponsors, SEDS / fest visitors.
 | `/avionics` | Single page, anchored sections for the 6 projects (below) | Build |
 | `/team` | Hierarchy/tree view, placeholder avatars now, real photos later | Build |
 | `/contact` | Web3Forms/Formspree form + socials (LinkedIn) + email | Build |
-| `/structural` | **Parked** — no page until official info is provided | Parked |
-| `/propulsion` | **Parked** — no page until official info is provided | Parked |
+| `/structural` | **Parked**: no page until official info is provided | Parked |
+| `/propulsion` | **Parked**: no page until official info is provided | Parked |
 | Legal/imprint | Added only if/when required | Parked |
 
-### Avionics page — the 6 projects (single route, anchored sections)
-1. **Hardware Core** — custom 4-layer PCB in Altium; efficient + powerful MCU & sensors
+### Avionics page: the 6 projects (single route, anchored sections)
+1. **Hardware Core**: custom 4-layer PCB in Altium; efficient + powerful MCU & sensors
    for flight data collection. Status badge: from real project state.
-2. **Software Core** — flight controller logic: data collection → preprocessing
+2. **Software Core**: flight controller logic: data collection → preprocessing
    (filters) → real-time processing (TVC, parachute deployment) → post-processing
    (SD logging, metrics, plots).
-3. **Communication Systems** — two tracks:
+3. **Communication Systems**: two tracks:
    - *Hardware*: comm modules, integration with Hardware Core PCB.
    - *Software*: custom test logic for modules, edge-case finding, data collection,
      two-way transfer (telemetry down, commands up).
-4. **Website Team** — this site.
-5. **Self-Landing RL Simulation** — Unity earth environment, rocket modeled per
+4. **Website Team**: this site.
+5. **Self-Landing RL Simulation**: Unity earth environment, rocket modeled per
    structural team's specs, custom RL agent, weights exported via ONNX / TFLite,
    eventual deployment on the flight MCU. **Badge: `In Progress`** (Unity 6 scene
    with rocket, spawn point and landing pad already scaffolded; ONNX/TFLite export
    and onboard deployment are `Planned` milestones inside the project).
-6. **Outreach** — leads + core members only; crew may repost.
+6. **Outreach**: leads + core members only; crew may repost.
 
 Each project section: status badge, one-paragraph summary, media placeholders,
 tech tags, anchor id for in-page nav.
@@ -69,8 +69,8 @@ tech tags, anchor id for in-page nav.
 | Fonts | `next/font` (self-hosted, subset) | No layout shift, no external requests |
 | 3D | **Three.js** (lazy, capability-gated) | Decision: start sophisticated, optimize down |
 | State | None (React built-ins) | Avoid heavy client state |
-| Animation | CSS transitions + rAF + IntersectionObserver | No framer-motion — bundle stays small |
-| Forms | **Web3Forms** (decided) — key via `NEXT_PUBLIC_WEB3FORMS_KEY`; graceful fallback to LinkedIn if unset | No backend of our own for v1 |
+| Animation | CSS transitions + rAF + IntersectionObserver | No framer-motion: bundle stays small |
+| Forms | **Web3Forms** (decided): key via `NEXT_PUBLIC_WEB3FORMS_KEY`; graceful fallback to LinkedIn if unset | No backend of our own for v1 |
 | Deploy | **Vercel** | Free tier, preview deploys, Lighthouse CI |
 | Domain | Vercel subdomain now; custom `.com`/`.in` later | Explicitly deferred |
 
@@ -85,9 +85,9 @@ tech tags, anchor id for in-page nav.
 | `--color-surface` | `#2F2D2B` | Cards |
 | `--color-line` | `#45413D` | Borders |
 | `--color-paper` | `#F4F1EC` | Primary text / rocket body white |
-| `--color-flame` | `#E05252` | Logo red — primary accent |
-| `--color-sky` | `#3D6F9E` | Logo blue — secondary accent |
-| `--color-amber` | `#F0A840` | Logo orange — tertiary accent |
+| `--color-flame` | `#E05252` | Logo red: primary accent |
+| `--color-sky` | `#3D6F9E` | Logo blue: secondary accent |
+| `--color-amber` | `#F0A840` | Logo orange: tertiary accent |
 
 Fonts: Space Grotesk (display) + Inter (body) via `next/font`, self-hosted.
 Note: lucide-react v1 removed brand icons; LinkedIn uses an in-house SVG
@@ -95,7 +95,7 @@ Note: lucide-react v1 removed brand icons; LinkedIn uses an in-house SVG
 
 ---
 
-## 4. Content Layer — "Nothing Hardcoded"
+## 4. Content Layer: "Nothing Hardcoded"
 
 ```
 src/content/
@@ -115,7 +115,7 @@ src/content/
 
 ---
 
-## 5. Launch Zone — Interactive Rocket (Three.js)
+## 5. Launch Zone: Interactive Rocket (Three.js)
 
 Our own concept (not qBITS' Bloch sphere): a rocket that flies.
 
@@ -134,11 +134,11 @@ Our own concept (not qBITS' Bloch sphere): a rocket that flies.
   exhaust: { count, size, ttl },
   dprCap,                  // clamp devicePixelRatio to save GPU
 }
-// tiers: "low" | "mid" | "high" — chosen at runtime
+// tiers: "low" | "mid" | "high": chosen at runtime
 ```
 
 ### Performance rules (enforced, not aspirational)
-- Three.js is **dynamically imported** — never in the initial server bundle.
+- Three.js is **dynamically imported**: never in the initial server bundle.
 - Render loop **pauses** when: zone off-screen, tab hidden, modal closed.
 - `prefers-reduced-motion` → static rocket illustration, no loop.
 - On unmount / HMR: dispose geometries, materials, renderer context.
@@ -191,14 +191,14 @@ public/
 3. ~~Launch Zone v1 (bounded follow mode) behind dynamic import~~ ✅
 4. ~~Free Flight modal~~ ✅
 5. ~~Perf pass: three.js verified lazy (~538 KB chunk, absent from initial load)~~ ✅ Lighthouse CI pending first deploy
-6. Deploy to Vercel — **blocked until you explicitly ask**; custom domain later.
+6. Deploy to Vercel: **blocked until you explicitly ask**; custom domain later.
 7. Fill real content when official info arrives (mission wording, media, rosters).
 
 ---
 
 ## 9. Parked / Future (explicitly not promised)
 
-- Structural & Propulsion pages — after official info (incl. possible 3D engine model
+- Structural & Propulsion pages: after official info (incl. possible 3D engine model
   viewer: click / zoom / rotate; Gaussian splatting investigated only then).
 - Real team photos.
 - Custom domain.

@@ -7,7 +7,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 export const metadata: Metadata = {
   title: "Team",
   description:
-    "The people behind Project Rocketry BITS Goa — subsystem leads, core members and crew across avionics, structural and propulsion.",
+    "The people behind Project Rocketry BITS Goa: subsystem leads, core members and crew across avionics, structural and propulsion.",
 };
 
 const accent: Record<SubsystemKey, { bg: string; label: string }> = {

@@ -55,7 +55,7 @@ export default function HomePage() {
           <div className="flex flex-col gap-4 text-base leading-relaxed text-muted">
             <p>{site.missionDetail}</p>
             <p>
-              Everything on this site reflects real work — built, tested and flown by
+              Everything on this site reflects real work: built, tested and flown by
               students. What is not done yet is labelled as such, because honest
               engineering is the whole point.
             </p>
@@ -79,7 +79,7 @@ export default function HomePage() {
           <SectionHeading
             eyebrow="Subsystems"
             title="Three teams, one vehicle"
-            description="The project is divided into Propulsion, Avionics and Structural — each researching, building and testing their part of the rocket."
+            description="The project is divided into Propulsion, Avionics and Structural: each researching, building and testing their part of the rocket."
           />
           <div className="mt-10 grid gap-5 md:grid-cols-3">
             {subsystems.map((subsystem) => (
@@ -131,7 +131,7 @@ export default function HomePage() {
                 Want to build rockets with us?
               </h2>
               <p className="text-base leading-relaxed text-muted">
-                We recruit from all batches and all branches — if you want to work on
+                We recruit from all batches and all branches: if you want to work on
                 flight hardware, embedded software, radio links or simulation, reach out.
               </p>
               <div className="flex flex-wrap gap-3">

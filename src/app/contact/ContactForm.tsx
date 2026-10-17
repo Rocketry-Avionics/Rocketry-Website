@@ -27,7 +27,7 @@ export default function ContactForm() {
           name: data.get("name"),
           email: data.get("email"),
           message: data.get("message"),
-          subject: `Website contact — ${data.get("name")}`,
+          subject: `Website contact: ${data.get("name")}`,
         }),
       });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -42,7 +42,7 @@ export default function ContactForm() {
     return (
       <div className="flex flex-col gap-4 rounded-2xl border border-line bg-surface p-6">
         <p className="text-sm leading-relaxed text-muted">
-          The contact form is not wired up yet — the site team still needs to add its
+          The contact form is not wired up yet: the site team still needs to add its
           form-service key. Until then, the fastest way to reach us is LinkedIn.
         </p>
         <a
@@ -109,7 +109,7 @@ export default function ContactForm() {
       </button>
       {state === "success" && (
         <p className="text-sm text-sky" role="status">
-          Message sent — we will get back to you soon.
+          Message sent: we will get back to you soon.
         </p>
       )}
       {state === "error" && (

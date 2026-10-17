@@ -1,7 +1,7 @@
 import type { LeadGroup, TeamMember } from "./types";
 
 export const team = {
-  note: "Team photos coming soon. The avionics roster — leads, core and crew — reflects our public announcements. Structural and propulsion rosters will be added once confirmed.",
+  note: "Team photos coming soon. The avionics roster: leads, core and crew: reflects our public announcements. Structural and propulsion rosters will be added once confirmed.",
   leads: [
     {
       id: "avionics",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
 import type { MediaSlide } from "@/content/types";
@@ -10,6 +10,23 @@ import CodeTerminal from "./CodeTerminal";
 export default function MediaCarousel({ slides }: { slides: MediaSlide[] }) {
   const [index, setIndex] = useState(0);
   const [enlarged, setEnlarged] = useState(false);
+
+  useEffect(() => {
+    if (!enlarged) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setEnlarged(false);
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        setIndex((current) => (current - 1 + slides.length) % slides.length);
+      }
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        setIndex((current) => (current + 1) % slides.length);
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [enlarged, slides.length]);
 
   if (slides.length === 0) return null;
   const slide = slides[index];

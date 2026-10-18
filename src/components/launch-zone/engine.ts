@@ -62,6 +62,11 @@ export class LaunchEngine {
   private stars: THREE.Points;
   private parallax: THREE.Group;
   private shootLine: THREE.Line | null = null;
+  private shootActive = false;
+  private shootT = 0;
+  private shootNext = 4;
+  private shootOrigin = new THREE.Vector3();
+  private shootVec = new THREE.Vector3();
 
   private onKeyDown = (e: KeyboardEvent) => {
     if (this.mode !== "free") return;
@@ -236,6 +241,21 @@ export class LaunchEngine {
     this.parallax = new THREE.Group();
     this.parallax.add(this.stars, farStars, moon, craterA, craterB);
     this.scene.add(this.parallax);
+
+    if (mode === "follow") {
+      const shootGeo = new THREE.BufferGeometry();
+      shootGeo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(6), 3));
+      const shootMat = new THREE.LineBasicMaterial({
+        color: 0xf4f1ec,
+        transparent: true,
+        opacity: 0,
+      });
+      this.disposables.push(shootGeo, shootMat);
+      this.shootLine = new THREE.Line(shootGeo, shootMat);
+      this.shootLine.visible = false;
+      this.shootLine.frustumCulled = false;
+      this.scene.add(this.shootLine);
+    }
 
     const count = this.cfg.particleCount;
     const geo = new THREE.BufferGeometry();
@@ -448,6 +468,45 @@ export class LaunchEngine {
     });
   }
 
+  private updateShootingStar(dt: number) {
+    if (!this.shootLine) return;
+    const mat = this.shootLine.material as THREE.LineBasicMaterial;
+    if (this.shootActive) {
+      this.shootT += dt / 0.9;
+      if (this.shootT >= 1) {
+        this.shootActive = false;
+        this.shootLine.visible = false;
+        this.shootNext = 5 + Math.random() * 7;
+        return;
+      }
+      const headX = this.shootOrigin.x + this.shootVec.x * this.shootT;
+      const headY = this.shootOrigin.y + this.shootVec.y * this.shootT;
+      const attr = this.shootLine.geometry.getAttribute("position") as THREE.BufferAttribute;
+      attr.setXYZ(0, headX, headY, -3);
+      attr.setXYZ(1, headX - this.shootVec.x * 0.1, headY - this.shootVec.y * 0.1, -3);
+      attr.needsUpdate = true;
+      mat.opacity = Math.sin(this.shootT * Math.PI) * 0.8;
+    } else {
+      this.shootNext -= dt;
+      if (this.shootNext <= 0) {
+        this.shootActive = true;
+        this.shootT = 0;
+        const fromLeft = Math.random() > 0.5;
+        this.shootOrigin.set(
+          fromLeft ? -this.halfW - 1 : this.halfW + 1,
+          this.halfH * (0.3 + Math.random() * 0.6),
+          -3
+        );
+        this.shootVec.set(
+          (fromLeft ? 1 : -1) * (this.halfW * 2 + 2),
+          -(1.5 + Math.random() * 2),
+          0
+        );
+        this.shootLine.visible = true;
+      }
+    }
+  }
+
   private emitParticle(speed: number) {
     const { positions, velocities, life, maxLife } = this.particleData;
     const count = life.length;
@@ -554,6 +613,7 @@ export class LaunchEngine {
         this.lastEmit = now;
         this.emitParticle(0.9 + intensity * 0.6);
       }
+      this.updateShootingStar(dt);
     } else {
       if (!this.landed && !this.crashed) {
         if (this.pointerTilt !== null) {

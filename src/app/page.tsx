@@ -19,7 +19,10 @@ export default function HomePage() {
             {site.org} · BITS Goa
           </p>
           <h1 className="mt-6 font-display text-6xl font-bold leading-[1.02] tracking-tight sm:text-7xl lg:text-8xl">
-            Project <span className="text-flame">Rocketry</span>
+            Project{" "}
+            <span className="animate-shimmer bg-gradient-to-r from-flame via-amber to-flame bg-[length:200%_100%] bg-clip-text text-transparent">
+              Rocketry
+            </span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
             {site.mission}

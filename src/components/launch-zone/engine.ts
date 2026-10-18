@@ -9,6 +9,7 @@ export interface EngineState {
   throttle: number;
   landed: boolean;
   crashed: boolean;
+  xNorm: number;
 }
 
 export interface EngineInput {
@@ -401,6 +402,10 @@ export class LaunchEngine {
       throttle: this.input.throttle,
       landed: this.landed,
       crashed: this.crashed,
+      xNorm:
+        this.halfW === 0
+          ? 0
+          : THREE.MathUtils.clamp(this.rocket.position.x / this.halfW, -1, 1),
     });
   }
 

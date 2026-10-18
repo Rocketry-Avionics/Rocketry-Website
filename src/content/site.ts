@@ -7,7 +7,7 @@ export const site = {
   orgUrl: "https://sedscelestia.org",
   institution: "BITS Pilani, K.K. Birla Goa Campus",
   location: "Zuarinagar, Goa, India",
-  tagline: "A hybrid-engine, retro-propulsive rocket: designed by students.",
+  tagline: "Where students turn curiosity into flight.",
   mission:
     "*Project Rocketry* is a student-run team under SEDS Celestia at BITS Pilani, K.K. Birla Goa Campus. We are researching and designing a *hybrid engine-powered, retro-propulsive rocket* with telemetry-based control and thrust vector control (TVC).",
   description:

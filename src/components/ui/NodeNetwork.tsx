@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useDeviceTier } from "@/lib/hooks/useDeviceTier";
 
 const COLORS = ["#f4f1ec", "#3d6f9e", "#3d6f9e", "#e05252", "#f0a840"];
-const NODE_COUNTS: Record<string, number> = { low: 22, mid: 38, high: 60 };
+const NODE_COUNTS: Record<string, number> = { low: 12, mid: 18, high: 28 };
 
 interface Node {
   x: number;
@@ -28,7 +28,7 @@ export default function NodeNetwork() {
     if (!ctx) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
     let width = 0;
     let height = 0;
     let nodes: Node[] = [];
@@ -51,7 +51,7 @@ export default function NodeNetwork() {
 
     const draw = (dt: number) => {
       ctx.clearRect(0, 0, width, height);
-      const link = 130;
+      const link = 95;
       for (let i = 0; i < nodes.length; i++) {
         const a = nodes[i];
         for (let j = i + 1; j < nodes.length; j++) {
@@ -60,7 +60,7 @@ export default function NodeNetwork() {
           const dy = a.y - b.y;
           const d2 = dx * dx + dy * dy;
           if (d2 < link * link) {
-            const alpha = (1 - Math.sqrt(d2) / link) * 0.32;
+            const alpha = (1 - Math.sqrt(d2) / link) * 0.16;
             ctx.strokeStyle = `rgba(61, 111, 158, ${alpha})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
@@ -71,7 +71,7 @@ export default function NodeNetwork() {
         }
       }
       for (const node of nodes) {
-        ctx.globalAlpha = 0.5;
+        ctx.globalAlpha = 0.32;
         ctx.fillStyle = node.c;
         ctx.beginPath();
         ctx.arc(node.x, node.y, node.r, 0, Math.PI * 2);
@@ -148,7 +148,7 @@ export default function NodeNetwork() {
       className="pointer-events-none absolute inset-0"
       aria-hidden="true"
     >
-      <canvas ref={canvasRef} className="h-full w-full opacity-70" />
+      <canvas ref={canvasRef} className="h-full w-full opacity-40" />
     </div>
   );
 }

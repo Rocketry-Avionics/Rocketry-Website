@@ -127,24 +127,29 @@ Our own concept (not qBITS' Bloch sphere): a rocket that flies.
 - **Full-width Launch Zone strip** under the hero text (element-relative bounds,
   never viewport-hardcoded), so the layout does not mirror a text-left/visual-right
   template.
-- Follow mode: the rocket chases the pointer through a spring-damper system
-  (stiffness/damping/maxSpeed), so boundary hits ease out instead of snapping;
+- Follow mode: the rocket chases the pointer through a stiff spring-damper system
+  (stiffness/damping/maxSpeed tuned for instant feel), position is clamped with
+  outward velocity cancelled at the edges (glide along the border, never bounce);
   banking tilt comes from horizontal velocity and the flame plus exhaust emit along
   the rocket's true axis.
 - Free Flight modal: keyboard (W/↑/Space thrust, A/D rotate), pointer drag steering,
   touch buttons, camera that follows the rocket upward (no ceiling), relaunch from
-  landed state, landing vs crash gated on having actually flown, HUD readouts
-  (altitude, velocity, apogee). Fun-first, not a sim.
+  landed state, landing vs crash gated on having actually flown, air drag capping
+  fall speed, HUD readouts (altitude, velocity, apogee) and a minimap showing the
+  rocket's position relative to the landing pad plus the apogee line. Fun-first,
+  not a sim.
+- Exhaust particles inherit the rocket's velocity, so the trail traces the real
+  flight path in both climb and descent.
 - Mobile: tap/drag instead of hover; reduced particle count.
-- Hero background: canvas node network (drifting nodes with distance-based links),
-  device-tiered node counts, paused off-screen and on hidden tabs, static frame
+- Hero background: subtle canvas node network (small node counts, faint distance
+  links), device-tiered, paused off-screen and on hidden tabs, static frame
   under reduced motion.
 
 ### All parameters from `launchZone.ts`, tiered by device
 ```ts
 {
   bounds: "parent",        // % of parent element, any screen size
-  physics: { stiffness, damping, maxSpeed, maxTilt, gravity, thrust, cameraFollowOffset },
+  physics: { stiffness, damping, maxSpeed, maxTilt, gravity, thrust, airDrag, cameraFollowOffset },
   exhaust: { count, size, ttl },
   dprCap,                  // clamp devicePixelRatio to save GPU
 }

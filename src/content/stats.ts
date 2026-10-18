@@ -1,8 +1,10 @@
+import { avionicsProjects, propulsionProjects, structuralProjects } from "./projects";
 import type { StatItem } from "./types";
+
+const miniProjectCount =
+  avionicsProjects.length + structuralProjects.length + propulsionProjects.length;
 
 export const stats: StatItem[] = [
   { value: "3", label: "Subsystems" },
-  { value: "6", label: "Avionics projects" },
-  { value: "TVC", label: "Thrust vector control" },
-  { value: "Hybrid", label: "Dual-restart engine" },
+  { value: String(miniProjectCount), label: "Mini-projects" },
 ];

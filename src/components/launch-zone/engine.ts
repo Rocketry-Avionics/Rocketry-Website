@@ -770,7 +770,9 @@ export class LaunchEngine {
         if (this.vel.y < 0 && this.rocket.position.y <= floor) {
           this.rocket.position.y = floor;
           if (this.hasFlown) {
+            const onPad = Math.abs(this.rocket.position.x) <= launchZone.padRadius;
             if (
+              onPad &&
               Math.abs(this.vel.y) <= launchZone.softLandingSpeed &&
               Math.abs(this.rocket.rotation.z) < 0.25
             ) {

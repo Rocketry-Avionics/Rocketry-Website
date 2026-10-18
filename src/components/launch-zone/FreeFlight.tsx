@@ -127,12 +127,12 @@ export default function FreeFlight({ className = "" }: { className?: string }) {
             </div>
 
             {hud.landed && (
-              <p className="pointer-events-none absolute left-1/2 top-4 -translate-x-1/2 rounded-full border border-sky/50 bg-sky/15 px-4 py-1 font-display text-sm font-semibold text-sky">
+              <p className="pointer-events-none absolute left-1/2 top-16 -translate-x-1/2 whitespace-nowrap rounded-full border border-sky/50 bg-sky/15 px-4 py-1 font-display text-sm font-semibold text-sky sm:top-4">
                 LANDED: nice flying
               </p>
             )}
             {hud.crashed && (
-              <p className="pointer-events-none absolute left-1/2 top-4 -translate-x-1/2 rounded-full border border-flame/50 bg-flame/15 px-4 py-1 font-display text-sm font-semibold text-flame">
+              <p className="pointer-events-none absolute left-1/2 top-16 -translate-x-1/2 whitespace-nowrap rounded-full border border-flame/50 bg-flame/15 px-4 py-1 font-display text-sm font-semibold text-flame sm:top-4">
                 CRASHED: hit reset and try again
               </p>
             )}

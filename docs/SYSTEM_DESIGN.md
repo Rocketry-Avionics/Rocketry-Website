@@ -23,6 +23,9 @@ Audiences: student recruits (freshers), sponsors, SEDS / fest visitors.
 4. **Responsive by construction.** Fluid layouts, no fixed-pixel assumptions.
 5. **No em dashes.** Ever, in UI copy, content files or docs. Use commas, colons or
    parentheses and keep the sentence flowing.
+6. **Hook words get highlights.** Proper nouns and key phrases are bolded (the
+   `*marker*` convention rendered by `src/lib/emphasis.tsx`), at most one per
+   sentence so the scanning eye always has a single anchor.
 
 ---
 
@@ -30,7 +33,7 @@ Audiences: student recruits (freshers), sponsors, SEDS / fest visitors.
 
 | Route | Contents | Status |
 |---|---|---|
-| `/` | Hero over a living node-network background, full-width interactive **Launch Zone** strip, mission, stats, subsystem teasers, CTA | Build |
+| `/` | Hero over a living node-network background with hook-word highlights, full-width interactive **Launch Zone** strip, community-driven "Why we build", dynamic mini-project stats with quick-link tiles, subsystem cards with hover glow, click-to-open dossiers and per-subsystem page links, join/sponsor CTA band | Build |
 | `/avionics` | Single page, anchored sections for the 6 projects (below). Each card shows its status timeline inline (current entry highlighted) and opens a project dossier: media carousel with prev/next + fullscreen expand (arrow keys navigate, Escape closes), timeline detail, points, tags | Build |
 | `/team` | Subsystem leads in a compact 2x2 grid (avionics has two co-leads, no single project lead), avionics core in a single five-column row, crew in a 4x4 grid. Every member card is clickable and opens a dossier modal: enlargeable photo (placeholder until real photos), Gmail (compulsory slot), LinkedIn/Twitter/Instagram shown only when filled. Close button lives in a header row so it never overlaps the photo | Build |
 | `/contact` | Web3Forms/Formspree form + socials (LinkedIn) + email | Build |

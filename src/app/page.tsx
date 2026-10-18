@@ -86,13 +86,43 @@ export default function HomePage() {
       </section>
 
       <section className="border-b border-line/60 bg-charcoal">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-px overflow-hidden px-4 py-10 sm:px-6 lg:grid-cols-4">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-4 px-4 py-10 sm:px-6 lg:grid-cols-4">
           {stats.map((stat) => (
-            <div key={stat.label} className="flex flex-col items-center gap-1 p-6 text-center">
+            <div
+              key={stat.label}
+              className="flex flex-col items-center justify-center gap-1 rounded-2xl border border-line bg-surface/60 p-6 text-center"
+            >
               <p className="font-display text-4xl font-bold text-flame">{stat.value}</p>
               <p className="text-sm text-muted">{stat.label}</p>
             </div>
           ))}
+          <Link
+            href="/avionics"
+            className="group flex flex-col items-center justify-center gap-1 rounded-2xl border border-line bg-surface/60 p-6 text-center transition-all duration-200 hover:-translate-y-0.5 hover:border-flame/50 hover:shadow-[0_0_36px_-14px_rgba(224,82,82,0.45)]"
+          >
+            <p className="font-display text-2xl font-bold text-paper transition-colors group-hover:text-flame">
+              Explore
+            </p>
+            <p className="inline-flex items-center gap-1 text-sm text-muted">
+              the mini-projects
+              <ArrowRight
+                className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
+                aria-hidden="true"
+              />
+            </p>
+          </Link>
+          <a
+            href="#subsystems"
+            className="group flex flex-col items-center justify-center gap-1 rounded-2xl border border-line bg-surface/60 p-6 text-center transition-all duration-200 hover:-translate-y-0.5 hover:border-sky/50 hover:shadow-[0_0_36px_-14px_rgba(61,111,158,0.5)]"
+          >
+            <p className="font-display text-2xl font-bold text-paper transition-colors group-hover:text-sky">
+              Meet
+            </p>
+            <p className="inline-flex items-center gap-1 text-sm text-muted">
+              the subsystems
+              <ArrowRight className="h-3.5 w-3.5 rotate-90 transition-transform group-hover:translate-y-0.5" aria-hidden="true" />
+            </p>
+          </a>
         </div>
       </section>
 

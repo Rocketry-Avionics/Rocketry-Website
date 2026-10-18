@@ -522,10 +522,15 @@ export class LaunchEngine {
       if (this.rocket.position.y > limitY) {
         this.rocket.position.y = limitY;
         if (this.springVel.y > 0) this.springVel.y = 0;
-      } else if (this.rocket.position.y < -limitY) {
+      } else       if (this.rocket.position.y < -limitY) {
         this.rocket.position.y = -limitY;
         if (this.springVel.y < 0) this.springVel.y = 0;
       }
+      this.parallax.position.set(
+        -this.rocket.position.x * 0.35,
+        -this.rocket.position.y * 0.35,
+        0
+      );
 
       const tilt = THREE.MathUtils.clamp(
         -this.springVel.x * launchZone.tiltFactor,
@@ -604,7 +609,11 @@ export class LaunchEngine {
         this.rocket.position.y - launchZone.cameraFollowOffset
       );
       this.camera.position.y += (camTarget - this.camera.position.y) * Math.min(1, 5 * dt);
-      this.stars.position.y = this.camera.position.y * 0.6;
+      this.parallax.position.set(
+        -this.rocket.position.x * 0.35,
+        this.camera.position.y * 0.5,
+        0
+      );
 
       this.flame.visible = this.input.throttle === 1 && !this.landed && !this.crashed;
       this.flame.scale.setScalar(0.8 + Math.random() * 0.4);

@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import LinkedInIcon from "@/components/ui/LinkedInIcon";
 import NodeNetwork from "@/components/ui/NodeNetwork";
+import SubsystemGrid from "./SubsystemGrid";
 import { site } from "@/content/site";
 import { stats } from "@/content/stats";
-import { subsystems } from "@/content/subsystems";
 import LaunchZone from "@/components/launch-zone/LaunchZone";
 import FreeFlight from "@/components/launch-zone/FreeFlight";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -133,45 +133,7 @@ export default function HomePage() {
             title="Three teams, one vehicle"
             description="Open a card to see what each crew owns, or jump straight in."
           />
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
-            {subsystems.map((subsystem) => (
-              <article
-                key={subsystem.id}
-                className="flex flex-col gap-4 rounded-2xl border border-line bg-surface p-6"
-              >
-                <div>
-                  <h3 className="font-display text-xl font-bold text-paper">
-                    {subsystem.name}
-                  </h3>
-                  <p className="text-sm text-flame">{subsystem.tagline}</p>
-                </div>
-                <p className="text-sm leading-relaxed text-muted">{subsystem.description}</p>
-                <ul className="flex flex-col gap-2">
-                  {subsystem.highlights.map((highlight) => (
-                    <li key={highlight} className="flex items-start gap-2 text-sm text-muted">
-                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-sky" aria-hidden="true" />
-                      {highlight}
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-auto pt-2">
-                  {subsystem.href ? (
-                    <Link
-                      href={subsystem.href}
-                      className="inline-flex items-center gap-1.5 font-display text-sm font-semibold text-flame transition-opacity hover:opacity-80"
-                    >
-                      Explore {subsystem.name}
-                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                    </Link>
-                  ) : (
-                    <span className="inline-flex rounded-full border border-line bg-raised px-3 py-1 text-xs text-muted">
-                      {subsystem.statusNote}
-                    </span>
-                  )}
-                </div>
-              </article>
-            ))}
-          </div>
+          <SubsystemGrid />
         </div>
       </section>
 

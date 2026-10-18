@@ -30,7 +30,7 @@ Audiences: student recruits (freshers), sponsors, SEDS / fest visitors.
 
 | Route | Contents | Status |
 |---|---|---|
-| `/` | Hero + interactive **Launch Zone**, mission, stats, subsystem teasers, CTA | Build |
+| `/` | Hero over a living node-network background, full-width interactive **Launch Zone** strip, mission, stats, subsystem teasers, CTA | Build |
 | `/avionics` | Single page, anchored sections for the 6 projects (below). Each card shows its status timeline inline (current entry highlighted) and opens a project dossier: media carousel with prev/next + fullscreen expand (arrow keys navigate, Escape closes), timeline detail, points, tags | Build |
 | `/team` | Subsystem leads in a compact 2x2 grid (avionics has two co-leads, no single project lead), avionics core in a single five-column row, crew in a 4x4 grid. Every member card is clickable and opens a dossier modal: enlargeable photo (placeholder until real photos), Gmail (compulsory slot), LinkedIn/Twitter/Instagram shown only when filled. Close button lives in a header row so it never overlaps the photo | Build |
 | `/contact` | Web3Forms/Formspree form + socials (LinkedIn) + email | Build |
@@ -124,17 +124,27 @@ src/content/
 Our own concept (not qBITS' Bloch sphere): a rocket that flies.
 
 ### v1 Spec
-- **Bounded zone** inside the hero (element-relative bounds, never viewport-hardcoded).
-- Rocket follows the pointer with `lerp`-smoothed physics + particle exhaust.
-- **"Free Flight" button** opens a modal: open controls (keyboard + touch), simple
-  physics loop, HUD readouts (altitude, velocity, apogee). Fun-first, not a sim.
+- **Full-width Launch Zone strip** under the hero text (element-relative bounds,
+  never viewport-hardcoded), so the layout does not mirror a text-left/visual-right
+  template.
+- Follow mode: the rocket chases the pointer through a spring-damper system
+  (stiffness/damping/maxSpeed), so boundary hits ease out instead of snapping;
+  banking tilt comes from horizontal velocity and the flame plus exhaust emit along
+  the rocket's true axis.
+- Free Flight modal: keyboard (W/↑/Space thrust, A/D rotate), pointer drag steering,
+  touch buttons, camera that follows the rocket upward (no ceiling), relaunch from
+  landed state, landing vs crash gated on having actually flown, HUD readouts
+  (altitude, velocity, apogee). Fun-first, not a sim.
 - Mobile: tap/drag instead of hover; reduced particle count.
+- Hero background: canvas node network (drifting nodes with distance-based links),
+  device-tiered node counts, paused off-screen and on hidden tabs, static frame
+  under reduced motion.
 
 ### All parameters from `launchZone.ts`, tiered by device
 ```ts
 {
   bounds: "parent",        // % of parent element, any screen size
-  physics: { lerpAlpha, maxTilt, gravity, thrust },
+  physics: { stiffness, damping, maxSpeed, maxTilt, gravity, thrust, cameraFollowOffset },
   exhaust: { count, size, ttl },
   dprCap,                  // clamp devicePixelRatio to save GPU
 }

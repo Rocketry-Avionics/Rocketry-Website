@@ -35,7 +35,7 @@ export class LaunchEngine {
     maxLife: Float32Array;
     cursor: number;
   };
-  private disposables: (THREE.BufferGeometry | THREE.Material)[] = [];
+  private disposables: (THREE.BufferGeometry | THREE.Material | THREE.Texture)[] = [];
   private raf = 0;
   private running = false;
   private mode: "follow" | "free";
@@ -223,23 +223,74 @@ export class LaunchEngine {
     this.disposables.push(farGeo, farMat);
     const farStars = new THREE.Points(farGeo, farMat);
 
-    const moonGeo = new THREE.CircleGeometry(1.1, 32);
-    const moonMat = new THREE.MeshBasicMaterial({ color: 0xd9d3c8 });
-    this.disposables.push(moonGeo, moonMat);
+    const moonCanvas = document.createElement("canvas");
+    moonCanvas.width = 256;
+    moonCanvas.height = 256;
+    const mctx = moonCanvas.getContext("2d");
+    if (mctx) {
+      const grad = mctx.createRadialGradient(96, 88, 20, 128, 128, 128);
+      grad.addColorStop(0, "#f5f2ea");
+      grad.addColorStop(0.55, "#cfc8bc");
+      grad.addColorStop(0.85, "#9a9284");
+      grad.addColorStop(1, "#6e675c");
+      mctx.fillStyle = grad;
+      mctx.fillRect(0, 0, 256, 256);
+      const craters: [number, number, number][] = [
+        [70, 60, 14],
+        [150, 90, 10],
+        [110, 150, 18],
+        [190, 170, 8],
+        [60, 180, 9],
+        [170, 40, 7],
+        [40, 120, 7],
+        [135, 205, 6],
+      ];
+      for (const [cx, cy, r] of craters) {
+        mctx.fillStyle = "rgba(90, 84, 74, 0.45)";
+        mctx.beginPath();
+        mctx.arc(cx, cy, r, 0, Math.PI * 2);
+        mctx.fill();
+        mctx.fillStyle = "rgba(245, 242, 234, 0.25)";
+        mctx.beginPath();
+        mctx.arc(cx - r * 0.25, cy - r * 0.25, r * 0.75, 0, Math.PI * 2);
+        mctx.fill();
+        mctx.fillStyle = "rgba(90, 84, 74, 0.5)";
+        mctx.beginPath();
+        mctx.arc(cx + r * 0.12, cy + r * 0.12, r * 0.62, 0, Math.PI * 2);
+        mctx.fill();
+      }
+    }
+    const moonTex = new THREE.CanvasTexture(moonCanvas);
+
+    const glowCanvas = document.createElement("canvas");
+    glowCanvas.width = 256;
+    glowCanvas.height = 256;
+    const gctx = glowCanvas.getContext("2d");
+    if (gctx) {
+      const ggrad = gctx.createRadialGradient(128, 128, 60, 128, 128, 128);
+      ggrad.addColorStop(0, "rgba(230, 226, 216, 0.35)");
+      ggrad.addColorStop(1, "rgba(230, 226, 216, 0)");
+      gctx.fillStyle = ggrad;
+      gctx.fillRect(0, 0, 256, 256);
+    }
+    const glowTex = new THREE.CanvasTexture(glowCanvas);
+
+    const glowGeo = new THREE.PlaneGeometry(4.6, 4.6);
+    const glowMat = new THREE.MeshBasicMaterial({
+      map: glowTex,
+      transparent: true,
+      depthWrite: false,
+    });
+    const moonGeo = new THREE.CircleGeometry(1.25, 48);
+    const moonMat = new THREE.MeshBasicMaterial({ map: moonTex });
+    this.disposables.push(glowGeo, glowMat, moonGeo, moonMat, moonTex, glowTex);
+    const glow = new THREE.Mesh(glowGeo, glowMat);
+    glow.position.set(3.6, 2.6, -9.05);
     const moon = new THREE.Mesh(moonGeo, moonMat);
     moon.position.set(3.6, 2.6, -9);
 
-    const craterGeo = new THREE.CircleGeometry(0.22, 16);
-    const craterMat = new THREE.MeshBasicMaterial({ color: 0xbfb8ab });
-    this.disposables.push(craterGeo, craterMat);
-    const craterA = new THREE.Mesh(craterGeo, craterMat);
-    craterA.position.set(3.3, 2.9, -8.95);
-    const craterB = new THREE.Mesh(craterGeo, craterMat);
-    craterB.position.set(4, 2.3, -8.95);
-    craterB.scale.setScalar(0.7);
-
     this.parallax = new THREE.Group();
-    this.parallax.add(this.stars, farStars, moon, craterA, craterB);
+    this.parallax.add(this.stars, farStars, glow, moon);
     this.scene.add(this.parallax);
 
     if (mode === "follow") {

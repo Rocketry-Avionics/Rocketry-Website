@@ -19,6 +19,7 @@ export interface LaunchZoneConfig {
   airDrag: number;
   rotateSpeed: number;
   softLandingSpeed: number;
+  padRadius: number;
   cameraFollowOffset: number;
   exhaustColor: number;
   flameColor: number;
@@ -37,6 +38,7 @@ export const launchZone: LaunchZoneConfig = {
   airDrag: 0.15,
   rotateSpeed: 2.6,
   softLandingSpeed: 1.3,
+  padRadius: 1.15,
   cameraFollowOffset: 1.4,
   exhaustColor: 0xf0a840,
   flameColor: 0xe05252,

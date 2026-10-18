@@ -140,10 +140,12 @@ Our own concept (not qBITS' Bloch sphere): a rocket that flies.
   rocket's position relative to the landing pad plus the apogee line. Steering is
   one consistent convention: +1 input leans and thrusts right, on keys, touch and
   drag alike. Fun-first, not a sim.
-- Parallax sky: near stars, a far star layer and a cratered moon sit in a parallax
-  group that shifts against rocket motion (and with the camera in free flight), so
-  horizontal and vertical travel are always visible. Occasional shooting stars
-  streak across the hero zone.
+- Parallax sky: near stars and a far star layer drift against rocket motion, while a
+  shaded, glowing moon (drawn on a canvas texture, no image assets) stays anchored
+  on screen at any altitude. A dedicated star layer acts like game speed lines:
+  stars sit still when the rocket is still and stream opposite to its velocity as
+  it accelerates, brightening with speed, in both follow and free flight modes.
+  Occasional shooting stars streak across the hero zone every few seconds.
 - Mobile: tap/drag instead of hover; reduced particle count.
 - Hero background: subtle canvas node network (small node counts, faint distance
   links), device-tiered, paused off-screen and on hidden tabs, static frame

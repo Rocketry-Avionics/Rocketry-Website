@@ -131,19 +131,23 @@ Our own concept (not qBITS' Bloch sphere): a rocket that flies.
   (stiffness/damping/maxSpeed tuned for instant feel), position is clamped with
   outward velocity cancelled at the edges (glide along the border, never bounce);
   banking tilt comes from horizontal velocity and the flame plus exhaust emit along
-  the rocket's true axis.
+  the rocket's true axis. Exhaust inherits a capped slice of motion in follow mode
+  so the trail stays tight even during fast cursor swings.
 - Free Flight modal: keyboard (W/↑/Space thrust, A/D rotate), pointer drag steering,
   touch buttons, camera that follows the rocket upward (no ceiling), relaunch from
   landed state, landing vs crash gated on having actually flown, air drag capping
   fall speed, HUD readouts (altitude, velocity, apogee) and a minimap showing the
-  rocket's position relative to the landing pad plus the apogee line. Fun-first,
-  not a sim.
-- Exhaust particles inherit the rocket's velocity, so the trail traces the real
-  flight path in both climb and descent.
+  rocket's position relative to the landing pad plus the apogee line. Steering is
+  one consistent convention: +1 input leans and thrusts right, on keys, touch and
+  drag alike. Fun-first, not a sim.
+- Parallax sky: near stars, a far star layer and a cratered moon sit in a parallax
+  group that shifts against rocket motion (and with the camera in free flight), so
+  horizontal and vertical travel are always visible. Occasional shooting stars
+  streak across the hero zone.
 - Mobile: tap/drag instead of hover; reduced particle count.
 - Hero background: subtle canvas node network (small node counts, faint distance
   links), device-tiered, paused off-screen and on hidden tabs, static frame
-  under reduced motion.
+  under reduced motion. The hero title carries a slow gradient shimmer.
 
 ### All parameters from `launchZone.ts`, tiered by device
 ```ts

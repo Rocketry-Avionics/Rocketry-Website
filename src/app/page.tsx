@@ -96,12 +96,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="border-b border-line/60">
+      <section id="subsystems" className="scroll-mt-20 border-b border-line/60">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <SectionHeading
             eyebrow="Subsystems"
             title="Three teams, one vehicle"
-            description="The project is divided into Propulsion, Avionics and Structural: each researching, building and testing their part of the rocket."
+            description="Open a card to see what each crew owns, or jump straight in."
           />
           <div className="mt-10 grid gap-5 md:grid-cols-3">
             {subsystems.map((subsystem) => (

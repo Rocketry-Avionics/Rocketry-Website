@@ -26,11 +26,11 @@ export interface LaunchZoneConfig {
 
 export const launchZone: LaunchZoneConfig = {
   rocketScale: 1,
-  tiltFactor: 0.22,
+  tiltFactor: 0.06,
   maxTilt: 0.45,
-  maxSpeed: 7,
-  stiffness: 30,
-  damping: 7,
+  maxSpeed: 20,
+  stiffness: 140,
+  damping: 20,
   gravity: 2.6,
   thrust: 7.2,
   rotateSpeed: 2.6,

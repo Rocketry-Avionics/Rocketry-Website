@@ -507,19 +507,19 @@ export class LaunchEngine {
       if (!this.landed && !this.crashed) {
         if (this.pointerTilt !== null) {
           this.rocket.rotation.z = THREE.MathUtils.clamp(
-            this.pointerTilt * launchZone.maxTilt,
+            -this.pointerTilt * launchZone.maxTilt,
             -0.6,
             0.6
           );
         } else {
           this.rocket.rotation.z = THREE.MathUtils.clamp(
-            this.rocket.rotation.z + this.input.rotate * launchZone.rotateSpeed * dt,
+            this.rocket.rotation.z - this.input.rotate * launchZone.rotateSpeed * dt,
             -0.6,
             0.6
           );
         }
         const theta = this.rocket.rotation.z;
-        this.vel.x += Math.sin(theta) * launchZone.thrust * this.input.throttle * dt;
+        this.vel.x += -Math.sin(theta) * launchZone.thrust * this.input.throttle * dt;
         this.vel.y +=
           (Math.cos(theta) * launchZone.thrust * this.input.throttle - launchZone.gravity) * dt;
         const dragFactor = 1 / (1 + launchZone.airDrag * dt);

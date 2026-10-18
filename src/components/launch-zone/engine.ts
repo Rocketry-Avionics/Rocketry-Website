@@ -465,6 +465,22 @@ export class LaunchEngine {
       }
       this.rocket.position.x += this.springVel.x * dt;
       this.rocket.position.y += this.springVel.y * dt;
+      const limitX = this.halfW * 0.98;
+      const limitY = this.halfH * 0.98;
+      if (this.rocket.position.x > limitX) {
+        this.rocket.position.x = limitX;
+        if (this.springVel.x > 0) this.springVel.x = 0;
+      } else if (this.rocket.position.x < -limitX) {
+        this.rocket.position.x = -limitX;
+        if (this.springVel.x < 0) this.springVel.x = 0;
+      }
+      if (this.rocket.position.y > limitY) {
+        this.rocket.position.y = limitY;
+        if (this.springVel.y > 0) this.springVel.y = 0;
+      } else if (this.rocket.position.y < -limitY) {
+        this.rocket.position.y = -limitY;
+        if (this.springVel.y < 0) this.springVel.y = 0;
+      }
 
       const tilt = THREE.MathUtils.clamp(
         -this.springVel.x * launchZone.tiltFactor,

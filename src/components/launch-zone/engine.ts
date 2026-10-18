@@ -456,14 +456,21 @@ export class LaunchEngine {
     const nozzleY = this.rocket.position.y - Math.cos(theta) * 0.72;
     const exX = Math.sin(theta);
     const exY = -Math.cos(theta);
-    const inherit = this.mode === "free" ? this.vel : this.springVel;
+    const inheritX =
+      this.mode === "free"
+        ? this.vel.x * 0.85
+        : THREE.MathUtils.clamp(this.springVel.x, -6, 6) * 0.3;
+    const inheritY =
+      this.mode === "free"
+        ? this.vel.y * 0.85
+        : THREE.MathUtils.clamp(this.springVel.y, -6, 6) * 0.3;
     const i = this.particleData.cursor;
     this.particleData.cursor = (i + 1) % count;
     positions[i * 3] = nozzleX + (Math.random() - 0.5) * 0.08;
     positions[i * 3 + 1] = nozzleY;
     positions[i * 3 + 2] = (Math.random() - 0.5) * 0.08;
-    velocities[i * 2] = exX * speed + inherit.x * 0.85 + (Math.random() - 0.5) * 0.4;
-    velocities[i * 2 + 1] = exY * speed + inherit.y * 0.85 + (Math.random() - 0.5) * 0.4;
+    velocities[i * 2] = exX * speed + inheritX + (Math.random() - 0.5) * 0.3;
+    velocities[i * 2 + 1] = exY * speed + inheritY + (Math.random() - 0.5) * 0.3;
     life[i] = 1;
     maxLife[i] = 0.5 + Math.random() * 0.4;
   }

@@ -1,4 +1,8 @@
-import type { AvionicsProject } from "./types";
+import type { AvionicsProject, MiniProjectRef } from "./types";
+
+export const structuralProjects: MiniProjectRef[] = [];
+
+export const propulsionProjects: MiniProjectRef[] = [];
 
 export const avionicsProjects: AvionicsProject[] = [
   {

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import LinkedInIcon from "@/components/ui/LinkedInIcon";
+import NodeNetwork from "@/components/ui/NodeNetwork";
 import { site } from "@/content/site";
 import { stats } from "@/content/stats";
 import { subsystems } from "@/content/subsystems";
@@ -11,36 +12,44 @@ import SectionHeading from "@/components/ui/SectionHeading";
 export default function HomePage() {
   return (
     <>
-      <section className="relative overflow-hidden border-b border-line/60 bg-[radial-gradient(ellipse_at_top,rgba(61,111,158,0.14),transparent_55%)]">
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 pb-16 pt-14 sm:px-6 lg:grid-cols-2 lg:items-center lg:gap-14 lg:pt-20">
-          <div className="flex flex-col items-start gap-6">
-            <p className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 font-display text-xs font-semibold uppercase tracking-[0.18em] text-muted">
-              {site.org} · BITS Goa
-            </p>
-            <h1 className="font-display text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl">
-              Project
-              <br />
-              <span className="text-flame">Rocketry</span>
-            </h1>
-            <p className="max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-              {site.mission}
-            </p>
-            <div className="flex flex-wrap items-center gap-3">
-              <Link
-                href="/avionics"
-                className="inline-flex items-center gap-2 rounded-full bg-flame px-6 py-3 font-display text-sm font-semibold text-ink transition-opacity hover:opacity-90"
-              >
-                Explore Avionics
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Link>
-              <FreeFlight />
-            </div>
-            <p className="text-xs text-muted">
-              {site.institution}
-            </p>
+      <section className="relative overflow-hidden border-b border-line/60">
+        <NodeNetwork />
+        <div className="relative mx-auto max-w-6xl px-4 pb-12 pt-16 text-center sm:px-6 lg:pt-24">
+          <p className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/80 px-3 py-1 font-display text-xs font-semibold uppercase tracking-[0.18em] text-muted backdrop-blur">
+            {site.org} · BITS Goa
+          </p>
+          <h1 className="mt-6 font-display text-6xl font-bold leading-[1.02] tracking-tight sm:text-7xl lg:text-8xl">
+            Project{" "}
+            <span className="animate-shimmer bg-gradient-to-r from-flame via-amber to-flame bg-[length:200%_100%] bg-clip-text text-transparent">
+              Rocketry
+            </span>
+          </h1>
+          <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
+            {site.mission}
+          </p>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <Link
+              href="/avionics"
+              className="inline-flex items-center gap-2 rounded-full bg-flame px-6 py-3 font-display text-sm font-semibold text-ink transition-opacity hover:opacity-90"
+            >
+              Explore Avionics
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+            <FreeFlight />
+            <a
+              href={site.socials[0].href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/80 px-6 py-3 font-display text-sm font-semibold text-paper backdrop-blur transition-colors hover:border-flame/60 hover:text-flame"
+            >
+              <LinkedInIcon className="h-4 w-4" />
+              Follow
+            </a>
           </div>
-
-          <div className="h-[380px] sm:h-[440px] lg:h-[520px]">
+          <p className="mt-5 text-xs text-muted">{site.institution}</p>
+        </div>
+        <div className="relative mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+          <div className="h-[380px] sm:h-[460px] lg:h-[540px]">
             <LaunchZone />
           </div>
         </div>

@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { ArrowUp, ChevronLeft, ChevronRight, RotateCcw, Rocket, X } from "lucide-react";
 import { useDeviceTier } from "@/lib/hooks/useDeviceTier";
 import { useReducedMotion } from "@/lib/hooks/useReducedMotion";
+import Minimap from "./Minimap";
 import type { LaunchEngine } from "./engine";
 
 const RocketCanvas = dynamic(() => import("./RocketCanvas"), { ssr: false });
@@ -15,6 +16,7 @@ interface HudState {
   apogee: number;
   landed: boolean;
   crashed: boolean;
+  xNorm: number;
 }
 
 export default function FreeFlight({ className = "" }: { className?: string }) {
@@ -28,6 +30,7 @@ export default function FreeFlight({ className = "" }: { className?: string }) {
     apogee: 0,
     landed: false,
     crashed: false,
+    xNorm: 0,
   });
 
   useEffect(() => {
@@ -46,7 +49,7 @@ export default function FreeFlight({ className = "" }: { className?: string }) {
   useEffect(() => {
     if (!open) {
       engineRef.current = null;
-      setHud({ altitude: 0, velocity: 0, apogee: 0, landed: false, crashed: false });
+      setHud({ altitude: 0, velocity: 0, apogee: 0, landed: false, crashed: false, xNorm: 0 });
     }
   }, [open]);
 
@@ -119,6 +122,10 @@ export default function FreeFlight({ className = "" }: { className?: string }) {
               </div>
             </div>
 
+            <div className="pointer-events-none absolute right-4 top-16">
+              <Minimap xNorm={hud.xNorm} altitude={hud.altitude} apogee={hud.apogee} />
+            </div>
+
             {hud.landed && (
               <p className="pointer-events-none absolute left-1/2 top-4 -translate-x-1/2 rounded-full border border-sky/50 bg-sky/15 px-4 py-1 font-display text-sm font-semibold text-sky">
                 LANDED: nice flying
@@ -169,6 +176,7 @@ export default function FreeFlight({ className = "" }: { className?: string }) {
               <div className="hidden text-right text-xs text-muted sm:block">
                 <p>W / ↑ / Space: thrust</p>
                 <p>A / D: rotate</p>
+                <p>Drag: steer</p>
               </div>
               <button
                 type="button"

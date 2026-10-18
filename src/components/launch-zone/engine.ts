@@ -9,6 +9,7 @@ export interface EngineState {
   throttle: number;
   landed: boolean;
   crashed: boolean;
+  xNorm: number;
 }
 
 export interface EngineInput {
@@ -19,6 +20,11 @@ export interface EngineInput {
 const FOV = 42;
 const CAMERA_Z = 9;
 const MARGIN = 0.92;
+
+function wrapRange(value: number, min: number, max: number): number {
+  const range = max - min;
+  return ((((value - min) % range) + range) % range) + min;
+}
 
 export class LaunchEngine {
   private renderer: THREE.WebGLRenderer;
@@ -34,7 +40,7 @@ export class LaunchEngine {
     maxLife: Float32Array;
     cursor: number;
   };
-  private disposables: (THREE.BufferGeometry | THREE.Material)[] = [];
+  private disposables: (THREE.BufferGeometry | THREE.Material | THREE.Texture)[] = [];
   private raf = 0;
   private running = false;
   private mode: "follow" | "free";
@@ -48,14 +54,29 @@ export class LaunchEngine {
 
   private target = new THREE.Vector2(0, 0);
   private hasTarget = false;
+  private springVel = new THREE.Vector2(0, 0);
   private input: EngineInput = { rotate: 0, throttle: 0 };
   private vel = new THREE.Vector2(0, 0);
   private apogee = 0;
   private landed = false;
   private crashed = false;
+  private hasFlown = false;
   private groundY = 0;
   private halfW = 0;
   private halfH = 0;
+  private stars: THREE.Points;
+  private parallax: THREE.Group;
+  private moonLayer: THREE.Group;
+  private speedStars: THREE.Points;
+  private speedBase: Float32Array;
+  private speedOff = new THREE.Vector2();
+  private speedMat: THREE.PointsMaterial;
+  private shootLine: THREE.Line | null = null;
+  private shootActive = false;
+  private shootT = 0;
+  private shootNext = 4;
+  private shootOrigin = new THREE.Vector3();
+  private shootVec = new THREE.Vector3();
 
   private onKeyDown = (e: KeyboardEvent) => {
     if (this.mode !== "free") return;
@@ -102,9 +123,21 @@ export class LaunchEngine {
     this.hasTarget = false;
   };
 
+  private onPointerSteer = (event: PointerEvent) => {
+    if (event.pointerType === "mouse" && event.buttons === 0) return;
+    const rect = this.canvas.getBoundingClientRect();
+    const nx = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    this.pointerTilt = nx;
+  };
+
+  private onPointerEnd = () => {
+    this.pointerTilt = null;
+  };
+
   private touchThrust = false;
   private touchLeft = false;
   private touchRight = false;
+  private pointerTilt: number | null = null;
   private canvas: HTMLCanvasElement;
 
   constructor(
@@ -159,7 +192,8 @@ export class LaunchEngine {
     }
 
     this.flame = this.buildFlame();
-    this.scene.add(this.flame);
+    this.flame.position.set(0, -1.1, 0);
+    this.rocket.add(this.flame);
 
     const starGeo = new THREE.BufferGeometry();
     const starCount = 90;
@@ -178,7 +212,136 @@ export class LaunchEngine {
       depthWrite: false,
     });
     this.disposables.push(starGeo, starMat);
-    this.scene.add(new THREE.Points(starGeo, starMat));
+    this.stars = new THREE.Points(starGeo, starMat);
+
+    const farGeo = new THREE.BufferGeometry();
+    const farCount = 60;
+    const farPos = new Float32Array(farCount * 3);
+    for (let i = 0; i < farCount; i++) {
+      farPos[i * 3] = (Math.random() - 0.5) * 22;
+      farPos[i * 3 + 1] = (Math.random() - 0.5) * 14;
+      farPos[i * 3 + 2] = -8;
+    }
+    farGeo.setAttribute("position", new THREE.BufferAttribute(farPos, 3));
+    const farMat = new THREE.PointsMaterial({
+      color: 0xf4f1ec,
+      size: 0.025,
+      transparent: true,
+      opacity: 0.3,
+      depthWrite: false,
+    });
+    this.disposables.push(farGeo, farMat);
+    const farStars = new THREE.Points(farGeo, farMat);
+
+    const moonCanvas = document.createElement("canvas");
+    moonCanvas.width = 256;
+    moonCanvas.height = 256;
+    const mctx = moonCanvas.getContext("2d");
+    if (mctx) {
+      const grad = mctx.createRadialGradient(96, 88, 20, 128, 128, 128);
+      grad.addColorStop(0, "#f5f2ea");
+      grad.addColorStop(0.55, "#cfc8bc");
+      grad.addColorStop(0.85, "#9a9284");
+      grad.addColorStop(1, "#6e675c");
+      mctx.fillStyle = grad;
+      mctx.fillRect(0, 0, 256, 256);
+      const craters: [number, number, number][] = [
+        [70, 60, 14],
+        [150, 90, 10],
+        [110, 150, 18],
+        [190, 170, 8],
+        [60, 180, 9],
+        [170, 40, 7],
+        [40, 120, 7],
+        [135, 205, 6],
+      ];
+      for (const [cx, cy, r] of craters) {
+        mctx.fillStyle = "rgba(90, 84, 74, 0.45)";
+        mctx.beginPath();
+        mctx.arc(cx, cy, r, 0, Math.PI * 2);
+        mctx.fill();
+        mctx.fillStyle = "rgba(245, 242, 234, 0.25)";
+        mctx.beginPath();
+        mctx.arc(cx - r * 0.25, cy - r * 0.25, r * 0.75, 0, Math.PI * 2);
+        mctx.fill();
+        mctx.fillStyle = "rgba(90, 84, 74, 0.5)";
+        mctx.beginPath();
+        mctx.arc(cx + r * 0.12, cy + r * 0.12, r * 0.62, 0, Math.PI * 2);
+        mctx.fill();
+      }
+    }
+    const moonTex = new THREE.CanvasTexture(moonCanvas);
+
+    const glowCanvas = document.createElement("canvas");
+    glowCanvas.width = 256;
+    glowCanvas.height = 256;
+    const gctx = glowCanvas.getContext("2d");
+    if (gctx) {
+      const ggrad = gctx.createRadialGradient(128, 128, 60, 128, 128, 128);
+      ggrad.addColorStop(0, "rgba(230, 226, 216, 0.35)");
+      ggrad.addColorStop(1, "rgba(230, 226, 216, 0)");
+      gctx.fillStyle = ggrad;
+      gctx.fillRect(0, 0, 256, 256);
+    }
+    const glowTex = new THREE.CanvasTexture(glowCanvas);
+
+    const glowGeo = new THREE.PlaneGeometry(4.6, 4.6);
+    const glowMat = new THREE.MeshBasicMaterial({
+      map: glowTex,
+      transparent: true,
+      depthWrite: false,
+    });
+    const moonGeo = new THREE.CircleGeometry(1.25, 48);
+    const moonMat = new THREE.MeshBasicMaterial({ map: moonTex });
+    this.disposables.push(glowGeo, glowMat, moonGeo, moonMat, moonTex, glowTex);
+    const glow = new THREE.Mesh(glowGeo, glowMat);
+    glow.position.set(3.6, 2.6, -9.05);
+    const moon = new THREE.Mesh(moonGeo, moonMat);
+    moon.position.set(3.6, 2.6, -9);
+
+    this.parallax = new THREE.Group();
+    this.parallax.add(this.stars, farStars);
+    this.scene.add(this.parallax);
+
+    this.moonLayer = new THREE.Group();
+    this.moonLayer.add(glow, moon);
+    this.scene.add(this.moonLayer);
+
+    const spdCount = 80;
+    this.speedBase = new Float32Array(spdCount * 3);
+    for (let i = 0; i < spdCount; i++) {
+      this.speedBase[i * 3] = (Math.random() - 0.5) * 20;
+      this.speedBase[i * 3 + 1] = (Math.random() - 0.5) * 14;
+      this.speedBase[i * 3 + 2] = -4.5 - Math.random() * 2;
+    }
+    const spdGeo = new THREE.BufferGeometry();
+    spdGeo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(spdCount * 3), 3));
+    this.speedMat = new THREE.PointsMaterial({
+      color: 0xf4f1ec,
+      size: 0.045,
+      transparent: true,
+      opacity: 0.35,
+      depthWrite: false,
+    });
+    this.disposables.push(spdGeo, this.speedMat);
+    this.speedStars = new THREE.Points(spdGeo, this.speedMat);
+    this.speedStars.frustumCulled = false;
+    this.scene.add(this.speedStars);
+
+    if (mode === "follow") {
+      const shootGeo = new THREE.BufferGeometry();
+      shootGeo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(6), 3));
+      const shootMat = new THREE.LineBasicMaterial({
+        color: 0xf4f1ec,
+        transparent: true,
+        opacity: 0,
+      });
+      this.disposables.push(shootGeo, shootMat);
+      this.shootLine = new THREE.Line(shootGeo, shootMat);
+      this.shootLine.visible = false;
+      this.shootLine.frustumCulled = false;
+      this.scene.add(this.shootLine);
+    }
 
     const count = this.cfg.particleCount;
     const geo = new THREE.BufferGeometry();
@@ -211,6 +374,11 @@ export class LaunchEngine {
     } else {
       window.addEventListener("keydown", this.onKeyDown);
       window.addEventListener("keyup", this.onKeyUp);
+      canvas.addEventListener("pointerdown", this.onPointerSteer);
+      canvas.addEventListener("pointermove", this.onPointerSteer);
+      canvas.addEventListener("pointerup", this.onPointerEnd);
+      canvas.addEventListener("pointerleave", this.onPointerEnd);
+      canvas.addEventListener("pointercancel", this.onPointerEnd);
     }
 
     this.observer = new ResizeObserver(() => this.resize());
@@ -352,13 +520,20 @@ export class LaunchEngine {
     }
   }
 
+  setPointerTilt(tilt: number | null) {
+    this.pointerTilt = tilt;
+  }
+
   reset() {
     this.rocket.position.set(0, this.groundY + 0.85, 0);
     this.rocket.rotation.z = 0;
     this.vel.set(0, 0);
+    this.springVel.set(0, 0);
     this.apogee = 0;
     this.landed = false;
     this.crashed = false;
+    this.hasFlown = false;
+    this.camera.position.y = 0;
     this.input = { rotate: 0, throttle: 0 };
     this.emitState();
   }
@@ -372,21 +547,99 @@ export class LaunchEngine {
       throttle: this.input.throttle,
       landed: this.landed,
       crashed: this.crashed,
+      xNorm:
+        this.halfW === 0
+          ? 0
+          : THREE.MathUtils.clamp(this.rocket.position.x / this.halfW, -1, 1),
     });
   }
 
-  private emitParticle(intensity: number) {
+  private updateSpeedStars(dt: number) {
+    const vx = this.mode === "free" ? this.vel.x : this.springVel.x;
+    const vy = this.mode === "free" ? this.vel.y : this.springVel.y;
+    this.speedOff.x -= vx * 0.55 * dt;
+    this.speedOff.y -= vy * 0.55 * dt;
+    const cx = 0;
+    const cy = this.mode === "free" ? this.camera.position.y : 0;
+    const bx = this.halfW + 2;
+    const by = this.halfH + 2;
+    if (bx <= 0 || by <= 0) return;
+    const speed = Math.hypot(vx, vy);
+    this.speedMat.opacity = Math.min(0.85, 0.3 + speed * 0.03);
+    this.speedMat.size = 0.045 + Math.min(0.05, speed * 0.004);
+    const attr = this.speedStars.geometry.getAttribute("position") as THREE.BufferAttribute;
+    const arr = attr.array as Float32Array;
+    const count = arr.length / 3;
+    for (let i = 0; i < count; i++) {
+      arr[i * 3] = wrapRange(this.speedBase[i * 3] + this.speedOff.x, cx - bx, cx + bx);
+      arr[i * 3 + 1] = wrapRange(this.speedBase[i * 3 + 1] + this.speedOff.y, cy - by, cy + by);
+      arr[i * 3 + 2] = this.speedBase[i * 3 + 2];
+    }
+    attr.needsUpdate = true;
+  }
+
+  private updateShootingStar(dt: number) {
+    if (!this.shootLine) return;
+    const mat = this.shootLine.material as THREE.LineBasicMaterial;
+    if (this.shootActive) {
+      this.shootT += dt / 0.9;
+      if (this.shootT >= 1) {
+        this.shootActive = false;
+        this.shootLine.visible = false;
+        this.shootNext = 3.5 + Math.random() * 4.5;
+        return;
+      }
+      const headX = this.shootOrigin.x + this.shootVec.x * this.shootT;
+      const headY = this.shootOrigin.y + this.shootVec.y * this.shootT;
+      const attr = this.shootLine.geometry.getAttribute("position") as THREE.BufferAttribute;
+      attr.setXYZ(0, headX, headY, -3);
+      attr.setXYZ(1, headX - this.shootVec.x * 0.1, headY - this.shootVec.y * 0.1, -3);
+      attr.needsUpdate = true;
+      mat.opacity = Math.sin(this.shootT * Math.PI) * 0.8;
+    } else {
+      this.shootNext -= dt;
+      if (this.shootNext <= 0) {
+        this.shootActive = true;
+        this.shootT = 0;
+        const fromLeft = Math.random() > 0.5;
+        this.shootOrigin.set(
+          fromLeft ? -this.halfW - 1 : this.halfW + 1,
+          this.halfH * (0.3 + Math.random() * 0.6),
+          -3
+        );
+        this.shootVec.set(
+          (fromLeft ? 1 : -1) * (this.halfW * 2 + 2),
+          -(1.5 + Math.random() * 2),
+          0
+        );
+        this.shootLine.visible = true;
+      }
+    }
+  }
+
+  private emitParticle(speed: number) {
     const { positions, velocities, life, maxLife } = this.particleData;
     const count = life.length;
-    const nozzleY = this.rocket.position.y - 0.72;
+    const theta = this.rocket.rotation.z;
+    const nozzleX = this.rocket.position.x + Math.sin(theta) * 0.72;
+    const nozzleY = this.rocket.position.y - Math.cos(theta) * 0.72;
+    const exX = Math.sin(theta);
+    const exY = -Math.cos(theta);
+    const inheritX =
+      this.mode === "free"
+        ? this.vel.x * 0.85
+        : THREE.MathUtils.clamp(this.springVel.x, -6, 6) * 0.3;
+    const inheritY =
+      this.mode === "free"
+        ? this.vel.y * 0.85
+        : THREE.MathUtils.clamp(this.springVel.y, -6, 6) * 0.3;
     const i = this.particleData.cursor;
     this.particleData.cursor = (i + 1) % count;
-    positions[i * 3] = this.rocket.position.x + (Math.random() - 0.5) * 0.1;
+    positions[i * 3] = nozzleX + (Math.random() - 0.5) * 0.08;
     positions[i * 3 + 1] = nozzleY;
-    positions[i * 3 + 2] = (Math.random() - 0.5) * 0.1;
-    const spread = 0.5;
-    velocities[i * 2] = (Math.random() - 0.5) * spread - Math.sin(this.rocket.rotation.z) * 1.2;
-    velocities[i * 2 + 1] = -1.4 * intensity + Math.random() * 0.4;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 0.08;
+    velocities[i * 2] = exX * speed + inheritX + (Math.random() - 0.5) * 0.3;
+    velocities[i * 2 + 1] = exY * speed + inheritY + (Math.random() - 0.5) * 0.3;
     life[i] = 1;
     maxLife[i] = 0.5 + Math.random() * 0.4;
   }
@@ -416,41 +669,89 @@ export class LaunchEngine {
     const time = this.timer.getElapsed();
 
     if (this.mode === "follow") {
-      if (this.hasTarget) {
-        this.rocket.position.x += (this.target.x - this.rocket.position.x) * this.cfg.lerpAlpha;
-        this.rocket.position.y += (this.target.y - this.rocket.position.y) * this.cfg.lerpAlpha;
-      } else {
-        this.rocket.position.x += (0 - this.rocket.position.x) * 0.02;
-        this.rocket.position.y = Math.sin(time * 0.8) * 0.25;
+      if (!this.hasTarget) {
+        this.target.set(0, Math.sin(time * 0.8) * 0.3);
       }
+      const ax =
+        (this.target.x - this.rocket.position.x) * launchZone.stiffness -
+        this.springVel.x * launchZone.damping;
+      const ay =
+        (this.target.y - this.rocket.position.y) * launchZone.stiffness -
+        this.springVel.y * launchZone.damping;
+      this.springVel.x += ax * dt;
+      this.springVel.y += ay * dt;
+      const speed = this.springVel.length();
+      if (speed > launchZone.maxSpeed) {
+        this.springVel.multiplyScalar(launchZone.maxSpeed / speed);
+      }
+      this.rocket.position.x += this.springVel.x * dt;
+      this.rocket.position.y += this.springVel.y * dt;
+      const limitX = this.halfW * 0.98;
+      const limitY = this.halfH * 0.98;
+      if (this.rocket.position.x > limitX) {
+        this.rocket.position.x = limitX;
+        if (this.springVel.x > 0) this.springVel.x = 0;
+      } else if (this.rocket.position.x < -limitX) {
+        this.rocket.position.x = -limitX;
+        if (this.springVel.x < 0) this.springVel.x = 0;
+      }
+      if (this.rocket.position.y > limitY) {
+        this.rocket.position.y = limitY;
+        if (this.springVel.y > 0) this.springVel.y = 0;
+      } else       if (this.rocket.position.y < -limitY) {
+        this.rocket.position.y = -limitY;
+        if (this.springVel.y < 0) this.springVel.y = 0;
+      }
+      this.parallax.position.set(
+        -this.rocket.position.x * 0.35,
+        -this.rocket.position.y * 0.35,
+        0
+      );
+      this.moonLayer.position.set(
+        -this.rocket.position.x * 0.05,
+        -this.rocket.position.y * 0.05,
+        0
+      );
+      this.updateSpeedStars(dt);
+
       const tilt = THREE.MathUtils.clamp(
-        (this.target.x - this.rocket.position.x) * launchZone.tiltFactor,
+        -this.springVel.x * launchZone.tiltFactor,
         -launchZone.maxTilt,
         launchZone.maxTilt
       );
-      this.rocket.rotation.z += (-tilt - this.rocket.rotation.z) * 0.12;
-      const speed = Math.abs(this.target.y - this.rocket.position.y) + Math.abs(this.target.x - this.rocket.position.x);
-      const intensity = Math.min(1, 0.25 + speed * 0.35);
+      this.rocket.rotation.z += (tilt - this.rocket.rotation.z) * Math.min(1, 10 * dt);
+      const intensity = Math.min(1, 0.25 + this.springVel.length() * 0.12);
       this.flame.visible = true;
-      this.flame.position.set(this.rocket.position.x, this.rocket.position.y - 1.05, 0);
       this.flame.scale.setScalar(0.7 + intensity * 0.6);
       const now = time;
       const rate = this.cfg.exhaustRate * 0.024 * (0.6 + intensity);
       if (now - this.lastEmit > rate) {
         this.lastEmit = now;
-        this.emitParticle(intensity);
+        this.emitParticle(0.9 + intensity * 0.6);
       }
+      this.updateShootingStar(dt);
     } else {
-      const angle = this.rocket.rotation.z;
       if (!this.landed && !this.crashed) {
-        this.vel.x += Math.sin(angle) * launchZone.thrust * this.input.throttle * dt;
+        if (this.pointerTilt !== null) {
+          this.rocket.rotation.z = THREE.MathUtils.clamp(
+            -this.pointerTilt * launchZone.maxTilt,
+            -0.6,
+            0.6
+          );
+        } else {
+          this.rocket.rotation.z = THREE.MathUtils.clamp(
+            this.rocket.rotation.z - this.input.rotate * launchZone.rotateSpeed * dt,
+            -0.6,
+            0.6
+          );
+        }
+        const theta = this.rocket.rotation.z;
+        this.vel.x += -Math.sin(theta) * launchZone.thrust * this.input.throttle * dt;
         this.vel.y +=
-          (Math.cos(angle) * launchZone.thrust * this.input.throttle - launchZone.gravity) * dt;
-        this.rocket.rotation.z = THREE.MathUtils.clamp(
-          angle + this.input.rotate * launchZone.rotateSpeed * dt,
-          -0.6,
-          0.6
-        );
+          (Math.cos(theta) * launchZone.thrust * this.input.throttle - launchZone.gravity) * dt;
+        const dragFactor = 1 / (1 + launchZone.airDrag * dt);
+        this.vel.x *= dragFactor;
+        this.vel.y *= dragFactor;
         this.rocket.position.x = THREE.MathUtils.clamp(
           this.rocket.position.x + this.vel.x * dt,
           -this.halfW,
@@ -463,32 +764,54 @@ export class LaunchEngine {
           this.vel.x = 0;
         }
         this.rocket.position.y += this.vel.y * dt;
-        if (this.rocket.position.y > this.halfH) {
-          this.rocket.position.y = this.halfH;
-          this.vel.y = Math.min(this.vel.y, 0);
-        }
+        if (this.rocket.position.y - this.groundY > 0.6) this.hasFlown = true;
+
         const floor = this.groundY + 0.85;
-        if (this.rocket.position.y <= floor) {
+        if (this.vel.y < 0 && this.rocket.position.y <= floor) {
           this.rocket.position.y = floor;
-          if (Math.abs(this.vel.y) <= launchZone.softLandingSpeed && Math.abs(this.rocket.rotation.z) < 0.25) {
-            this.landed = true;
-          } else {
-            this.crashed = true;
+          if (this.hasFlown) {
+            if (
+              Math.abs(this.vel.y) <= launchZone.softLandingSpeed &&
+              Math.abs(this.rocket.rotation.z) < 0.25
+            ) {
+              this.landed = true;
+            } else {
+              this.crashed = true;
+            }
           }
           this.vel.set(0, 0);
           this.emitState();
         }
         this.apogee = Math.max(this.apogee, this.rocket.position.y - this.groundY);
+      } else if (this.landed && this.input.throttle === 1) {
+        this.landed = false;
       }
+
+      const camTarget = Math.max(
+        0,
+        this.rocket.position.y - launchZone.cameraFollowOffset
+      );
+      this.camera.position.y += (camTarget - this.camera.position.y) * Math.min(1, 5 * dt);
+      this.parallax.position.set(
+        -this.rocket.position.x * 0.35,
+        this.camera.position.y * 0.5,
+        0
+      );
+      this.moonLayer.position.set(
+        -this.rocket.position.x * 0.05,
+        Math.max(this.camera.position.y * 0.92, this.camera.position.y - 5.5),
+        0
+      );
+      this.updateSpeedStars(dt);
+
       this.flame.visible = this.input.throttle === 1 && !this.landed && !this.crashed;
-      this.flame.position.set(this.rocket.position.x, this.rocket.position.y - 1.05, 0);
       this.flame.scale.setScalar(0.8 + Math.random() * 0.4);
       if (this.input.throttle === 1 && !this.landed && !this.crashed) {
         const rate = this.cfg.exhaustRate * 0.016;
         if (time - this.lastEmit > rate) {
           this.lastEmit = time;
-          this.emitParticle(1);
-          this.emitParticle(1);
+          this.emitParticle(2.2);
+          this.emitParticle(1.8);
         }
       }
       this.stateTimer += dt;
@@ -507,6 +830,11 @@ export class LaunchEngine {
     this.observer?.disconnect();
     this.canvas.removeEventListener("pointermove", this.onPointerMove);
     this.canvas.removeEventListener("pointerleave", this.onPointerLeave);
+    this.canvas.removeEventListener("pointerdown", this.onPointerSteer);
+    this.canvas.removeEventListener("pointermove", this.onPointerSteer);
+    this.canvas.removeEventListener("pointerup", this.onPointerEnd);
+    this.canvas.removeEventListener("pointerleave", this.onPointerEnd);
+    this.canvas.removeEventListener("pointercancel", this.onPointerEnd);
     window.removeEventListener("keydown", this.onKeyDown);
     window.removeEventListener("keyup", this.onKeyUp);
     this.scene.traverse((obj) => {

@@ -712,6 +712,7 @@ export class LaunchEngine {
         -this.rocket.position.y * 0.05,
         0
       );
+      this.updateSpeedStars(dt);
 
       const tilt = THREE.MathUtils.clamp(
         -this.springVel.x * launchZone.tiltFactor,

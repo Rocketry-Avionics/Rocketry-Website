@@ -21,6 +21,11 @@ const FOV = 42;
 const CAMERA_Z = 9;
 const MARGIN = 0.92;
 
+function wrapRange(value: number, min: number, max: number): number {
+  const range = max - min;
+  return ((((value - min) % range) + range) % range) + min;
+}
+
 export class LaunchEngine {
   private renderer: THREE.WebGLRenderer;
   private scene: THREE.Scene;
@@ -62,6 +67,10 @@ export class LaunchEngine {
   private stars: THREE.Points;
   private parallax: THREE.Group;
   private moonLayer: THREE.Group;
+  private speedStars: THREE.Points;
+  private speedBase: Float32Array;
+  private speedOff = new THREE.Vector2();
+  private speedMat: THREE.PointsMaterial;
   private shootLine: THREE.Line | null = null;
   private shootActive = false;
   private shootT = 0;
@@ -298,6 +307,27 @@ export class LaunchEngine {
     this.moonLayer.add(glow, moon);
     this.scene.add(this.moonLayer);
 
+    const spdCount = 80;
+    this.speedBase = new Float32Array(spdCount * 3);
+    for (let i = 0; i < spdCount; i++) {
+      this.speedBase[i * 3] = (Math.random() - 0.5) * 20;
+      this.speedBase[i * 3 + 1] = (Math.random() - 0.5) * 14;
+      this.speedBase[i * 3 + 2] = -4.5 - Math.random() * 2;
+    }
+    const spdGeo = new THREE.BufferGeometry();
+    spdGeo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(spdCount * 3), 3));
+    this.speedMat = new THREE.PointsMaterial({
+      color: 0xf4f1ec,
+      size: 0.045,
+      transparent: true,
+      opacity: 0.35,
+      depthWrite: false,
+    });
+    this.disposables.push(spdGeo, this.speedMat);
+    this.speedStars = new THREE.Points(spdGeo, this.speedMat);
+    this.speedStars.frustumCulled = false;
+    this.scene.add(this.speedStars);
+
     if (mode === "follow") {
       const shootGeo = new THREE.BufferGeometry();
       shootGeo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(6), 3));
@@ -524,6 +554,30 @@ export class LaunchEngine {
     });
   }
 
+  private updateSpeedStars(dt: number) {
+    const vx = this.mode === "free" ? this.vel.x : this.springVel.x;
+    const vy = this.mode === "free" ? this.vel.y : this.springVel.y;
+    this.speedOff.x -= vx * 0.55 * dt;
+    this.speedOff.y -= vy * 0.55 * dt;
+    const cx = 0;
+    const cy = this.mode === "free" ? this.camera.position.y : 0;
+    const bx = this.halfW + 2;
+    const by = this.halfH + 2;
+    if (bx <= 0 || by <= 0) return;
+    const speed = Math.hypot(vx, vy);
+    this.speedMat.opacity = Math.min(0.85, 0.3 + speed * 0.03);
+    this.speedMat.size = 0.045 + Math.min(0.05, speed * 0.004);
+    const attr = this.speedStars.geometry.getAttribute("position") as THREE.BufferAttribute;
+    const arr = attr.array as Float32Array;
+    const count = arr.length / 3;
+    for (let i = 0; i < count; i++) {
+      arr[i * 3] = wrapRange(this.speedBase[i * 3] + this.speedOff.x, cx - bx, cx + bx);
+      arr[i * 3 + 1] = wrapRange(this.speedBase[i * 3 + 1] + this.speedOff.y, cy - by, cy + by);
+      arr[i * 3 + 2] = this.speedBase[i * 3 + 2];
+    }
+    attr.needsUpdate = true;
+  }
+
   private updateShootingStar(dt: number) {
     if (!this.shootLine) return;
     const mat = this.shootLine.material as THREE.LineBasicMaterial;
@@ -747,6 +801,7 @@ export class LaunchEngine {
         Math.max(this.camera.position.y * 0.92, this.camera.position.y - 5.5),
         0
       );
+      this.updateSpeedStars(dt);
 
       this.flame.visible = this.input.throttle === 1 && !this.landed && !this.crashed;
       this.flame.scale.setScalar(0.8 + Math.random() * 0.4);

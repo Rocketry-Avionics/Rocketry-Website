@@ -60,6 +60,8 @@ export class LaunchEngine {
   private halfW = 0;
   private halfH = 0;
   private stars: THREE.Points;
+  private parallax: THREE.Group;
+  private shootLine: THREE.Line | null = null;
 
   private onKeyDown = (e: KeyboardEvent) => {
     if (this.mode !== "free") return;
@@ -196,7 +198,44 @@ export class LaunchEngine {
     });
     this.disposables.push(starGeo, starMat);
     this.stars = new THREE.Points(starGeo, starMat);
-    this.scene.add(this.stars);
+
+    const farGeo = new THREE.BufferGeometry();
+    const farCount = 60;
+    const farPos = new Float32Array(farCount * 3);
+    for (let i = 0; i < farCount; i++) {
+      farPos[i * 3] = (Math.random() - 0.5) * 22;
+      farPos[i * 3 + 1] = (Math.random() - 0.5) * 14;
+      farPos[i * 3 + 2] = -8;
+    }
+    farGeo.setAttribute("position", new THREE.BufferAttribute(farPos, 3));
+    const farMat = new THREE.PointsMaterial({
+      color: 0xf4f1ec,
+      size: 0.025,
+      transparent: true,
+      opacity: 0.3,
+      depthWrite: false,
+    });
+    this.disposables.push(farGeo, farMat);
+    const farStars = new THREE.Points(farGeo, farMat);
+
+    const moonGeo = new THREE.CircleGeometry(1.1, 32);
+    const moonMat = new THREE.MeshBasicMaterial({ color: 0xd9d3c8 });
+    this.disposables.push(moonGeo, moonMat);
+    const moon = new THREE.Mesh(moonGeo, moonMat);
+    moon.position.set(3.6, 2.6, -9);
+
+    const craterGeo = new THREE.CircleGeometry(0.22, 16);
+    const craterMat = new THREE.MeshBasicMaterial({ color: 0xbfb8ab });
+    this.disposables.push(craterGeo, craterMat);
+    const craterA = new THREE.Mesh(craterGeo, craterMat);
+    craterA.position.set(3.3, 2.9, -8.95);
+    const craterB = new THREE.Mesh(craterGeo, craterMat);
+    craterB.position.set(4, 2.3, -8.95);
+    craterB.scale.setScalar(0.7);
+
+    this.parallax = new THREE.Group();
+    this.parallax.add(this.stars, farStars, moon, craterA, craterB);
+    this.scene.add(this.parallax);
 
     const count = this.cfg.particleCount;
     const geo = new THREE.BufferGeometry();

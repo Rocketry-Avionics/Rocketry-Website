@@ -48,6 +48,7 @@ export class LaunchEngine {
 
   private target = new THREE.Vector2(0, 0);
   private hasTarget = false;
+  private springVel = new THREE.Vector2(0, 0);
   private input: EngineInput = { rotate: 0, throttle: 0 };
   private vel = new THREE.Vector2(0, 0);
   private apogee = 0;
@@ -365,6 +366,7 @@ export class LaunchEngine {
     this.rocket.position.set(0, this.groundY + 0.85, 0);
     this.rocket.rotation.z = 0;
     this.vel.set(0, 0);
+    this.springVel.set(0, 0);
     this.apogee = 0;
     this.landed = false;
     this.crashed = false;
@@ -430,23 +432,31 @@ export class LaunchEngine {
     const time = this.timer.getElapsed();
 
     if (this.mode === "follow") {
-      if (this.hasTarget) {
-        this.rocket.position.x += (this.target.x - this.rocket.position.x) * this.cfg.lerpAlpha;
-        this.rocket.position.y += (this.target.y - this.rocket.position.y) * this.cfg.lerpAlpha;
-      } else {
-        this.rocket.position.x += (0 - this.rocket.position.x) * 0.02;
-        this.rocket.position.y = Math.sin(time * 0.8) * 0.25;
+      if (!this.hasTarget) {
+        this.target.set(0, Math.sin(time * 0.8) * 0.3);
       }
+      const ax =
+        (this.target.x - this.rocket.position.x) * launchZone.stiffness -
+        this.springVel.x * launchZone.damping;
+      const ay =
+        (this.target.y - this.rocket.position.y) * launchZone.stiffness -
+        this.springVel.y * launchZone.damping;
+      this.springVel.x += ax * dt;
+      this.springVel.y += ay * dt;
+      const speed = this.springVel.length();
+      if (speed > launchZone.maxSpeed) {
+        this.springVel.multiplyScalar(launchZone.maxSpeed / speed);
+      }
+      this.rocket.position.x += this.springVel.x * dt;
+      this.rocket.position.y += this.springVel.y * dt;
+
       const tilt = THREE.MathUtils.clamp(
-        (this.target.x - this.rocket.position.x) * launchZone.tiltFactor,
+        -this.springVel.x * launchZone.tiltFactor,
         -launchZone.maxTilt,
         launchZone.maxTilt
       );
-      this.rocket.rotation.z += (-tilt - this.rocket.rotation.z) * 0.12;
-      const speed =
-        Math.abs(this.target.y - this.rocket.position.y) +
-        Math.abs(this.target.x - this.rocket.position.x);
-      const intensity = Math.min(1, 0.25 + speed * 0.35);
+      this.rocket.rotation.z += (tilt - this.rocket.rotation.z) * Math.min(1, 10 * dt);
+      const intensity = Math.min(1, 0.25 + this.springVel.length() * 0.12);
       this.flame.visible = true;
       this.flame.scale.setScalar(0.7 + intensity * 0.6);
       const now = time;

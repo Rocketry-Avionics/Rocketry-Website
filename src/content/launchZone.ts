@@ -3,7 +3,6 @@ export type DeviceTier = "low" | "mid" | "high";
 export interface TierConfig {
   particleCount: number;
   dprCap: number;
-  lerpAlpha: number;
   exhaustRate: number;
   antialias: boolean;
 }
@@ -12,6 +11,9 @@ export interface LaunchZoneConfig {
   rocketScale: number;
   tiltFactor: number;
   maxTilt: number;
+  maxSpeed: number;
+  stiffness: number;
+  damping: number;
   gravity: number;
   thrust: number;
   rotateSpeed: number;
@@ -24,8 +26,11 @@ export interface LaunchZoneConfig {
 
 export const launchZone: LaunchZoneConfig = {
   rocketScale: 1,
-  tiltFactor: 0.4,
+  tiltFactor: 0.22,
   maxTilt: 0.45,
+  maxSpeed: 7,
+  stiffness: 30,
+  damping: 7,
   gravity: 2.6,
   thrust: 7.2,
   rotateSpeed: 2.6,
@@ -37,21 +42,18 @@ export const launchZone: LaunchZoneConfig = {
     low: {
       particleCount: 48,
       dprCap: 1.25,
-      lerpAlpha: 0.07,
       exhaustRate: 0.45,
       antialias: false,
     },
     mid: {
       particleCount: 120,
       dprCap: 1.5,
-      lerpAlpha: 0.09,
       exhaustRate: 0.75,
       antialias: true,
     },
     high: {
       particleCount: 220,
       dprCap: 2,
-      lerpAlpha: 0.12,
       exhaustRate: 1,
       antialias: true,
     },

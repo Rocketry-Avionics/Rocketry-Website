@@ -69,9 +69,14 @@ export default function Footer() {
 
       <div className="border-t border-line/60">
         <div className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-5 text-xs text-muted sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <p>© {new Date().getFullYear()} {site.fullName}. All rights reserved.</p>
           <p>
-            Part of {site.org} · {site.institution}
+            © {new Date().getFullYear()}{" "}
+            <b className="font-semibold text-flame">Project Rocketry</b> BITS Goa. All
+            rights reserved.
+          </p>
+          <p>
+            Part of <b className="font-semibold text-paper">SEDS Celestia</b> ·{" "}
+            {site.institution}
           </p>
         </div>
       </div>

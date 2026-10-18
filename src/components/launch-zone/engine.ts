@@ -586,7 +586,7 @@ export class LaunchEngine {
       if (this.shootT >= 1) {
         this.shootActive = false;
         this.shootLine.visible = false;
-        this.shootNext = 5 + Math.random() * 7;
+        this.shootNext = 3.5 + Math.random() * 4.5;
         return;
       }
       const headX = this.shootOrigin.x + this.shootVec.x * this.shootT;

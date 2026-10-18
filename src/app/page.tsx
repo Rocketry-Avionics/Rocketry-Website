@@ -8,6 +8,7 @@ import { subsystems } from "@/content/subsystems";
 import LaunchZone from "@/components/launch-zone/LaunchZone";
 import FreeFlight from "@/components/launch-zone/FreeFlight";
 import SectionHeading from "@/components/ui/SectionHeading";
+import { emphasize } from "@/lib/emphasis";
 
 export default function HomePage() {
   return (
@@ -25,7 +26,7 @@ export default function HomePage() {
             </span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-            {site.mission}
+            {emphasize(site.mission)}
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link

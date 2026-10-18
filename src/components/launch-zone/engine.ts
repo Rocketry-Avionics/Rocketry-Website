@@ -61,6 +61,7 @@ export class LaunchEngine {
   private halfH = 0;
   private stars: THREE.Points;
   private parallax: THREE.Group;
+  private moonLayer: THREE.Group;
   private shootLine: THREE.Line | null = null;
   private shootActive = false;
   private shootT = 0;
@@ -290,8 +291,12 @@ export class LaunchEngine {
     moon.position.set(3.6, 2.6, -9);
 
     this.parallax = new THREE.Group();
-    this.parallax.add(this.stars, farStars, glow, moon);
+    this.parallax.add(this.stars, farStars);
     this.scene.add(this.parallax);
+
+    this.moonLayer = new THREE.Group();
+    this.moonLayer.add(glow, moon);
+    this.scene.add(this.moonLayer);
 
     if (mode === "follow") {
       const shootGeo = new THREE.BufferGeometry();
@@ -648,6 +653,11 @@ export class LaunchEngine {
         -this.rocket.position.y * 0.35,
         0
       );
+      this.moonLayer.position.set(
+        -this.rocket.position.x * 0.05,
+        -this.rocket.position.y * 0.05,
+        0
+      );
 
       const tilt = THREE.MathUtils.clamp(
         -this.springVel.x * launchZone.tiltFactor,
@@ -730,6 +740,11 @@ export class LaunchEngine {
       this.parallax.position.set(
         -this.rocket.position.x * 0.35,
         this.camera.position.y * 0.5,
+        0
+      );
+      this.moonLayer.position.set(
+        -this.rocket.position.x * 0.05,
+        Math.max(this.camera.position.y * 0.92, this.camera.position.y - 5.5),
         0
       );
 

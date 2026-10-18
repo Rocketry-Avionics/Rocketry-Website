@@ -62,12 +62,24 @@ export default function HomePage() {
             eyebrow="Mission"
             title="Why we build"
           />
-          <div className="flex flex-col gap-4 text-base leading-relaxed text-muted">
-            <p>{site.missionDetail}</p>
+          <div className="flex flex-col gap-4 text-base leading-relaxed text-muted sm:text-lg">
             <p>
-              Everything on this site reflects real work: built, tested and flown by
-              students. What is not done yet is labelled as such, because honest
-              engineering is the whole point.
+              Rockets are never a one-person job.{" "}
+              <b className="font-semibold text-paper">Project Rocketry</b> exists for
+              the students who stare at the sky and wonder how physics escapes the
+              textbook and leaves the planet.
+            </p>
+            <p>
+              This is where the{" "}
+              <b className="font-semibold text-paper">electronics</b> tinkerers, the
+              aerodynamics dreamers and the mechanics builders on campus find each
+              other and become one crew.
+            </p>
+            <p>
+              One vehicle, many crafts. Bring your curiosity, and we will hand you a{" "}
+              <b className="font-semibold text-paper">launchpad</b>: the physics, the
+              electronics, the mechanics and the aerodynamics, all explored together
+              in collaboration.
             </p>
           </div>
         </div>

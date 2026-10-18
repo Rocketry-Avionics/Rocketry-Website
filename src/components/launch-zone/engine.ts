@@ -517,7 +517,9 @@ export class LaunchEngine {
         this.vel.x += Math.sin(theta) * launchZone.thrust * this.input.throttle * dt;
         this.vel.y +=
           (Math.cos(theta) * launchZone.thrust * this.input.throttle - launchZone.gravity) * dt;
-        this.vel.x *= 1 / (1 + 0.35 * dt);
+        const dragFactor = 1 / (1 + launchZone.airDrag * dt);
+        this.vel.x *= dragFactor;
+        this.vel.y *= dragFactor;
         this.rocket.position.x = THREE.MathUtils.clamp(
           this.rocket.position.x + this.vel.x * dt,
           -this.halfW,

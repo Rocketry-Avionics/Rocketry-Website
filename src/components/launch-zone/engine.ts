@@ -174,7 +174,7 @@ export class LaunchEngine {
     }
 
     this.flame = this.buildFlame();
-    this.flame.position.set(0, -1.02, 0);
+    this.flame.position.set(0, -1.1, 0);
     this.rocket.add(this.flame);
 
     const starGeo = new THREE.BufferGeometry();

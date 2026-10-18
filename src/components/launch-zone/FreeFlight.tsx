@@ -169,6 +169,7 @@ export default function FreeFlight({ className = "" }: { className?: string }) {
               <div className="hidden text-right text-xs text-muted sm:block">
                 <p>W / ↑ / Space: thrust</p>
                 <p>A / D: rotate</p>
+                <p>Drag: steer</p>
               </div>
               <button
                 type="button"

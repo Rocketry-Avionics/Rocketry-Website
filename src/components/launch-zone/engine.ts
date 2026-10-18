@@ -105,6 +105,17 @@ export class LaunchEngine {
     this.hasTarget = false;
   };
 
+  private onPointerSteer = (event: PointerEvent) => {
+    if (event.pointerType === "mouse" && event.buttons === 0) return;
+    const rect = this.canvas.getBoundingClientRect();
+    const nx = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    this.pointerTilt = nx;
+  };
+
+  private onPointerEnd = () => {
+    this.pointerTilt = null;
+  };
+
   private touchThrust = false;
   private touchLeft = false;
   private touchRight = false;
@@ -217,6 +228,11 @@ export class LaunchEngine {
     } else {
       window.addEventListener("keydown", this.onKeyDown);
       window.addEventListener("keyup", this.onKeyUp);
+      canvas.addEventListener("pointerdown", this.onPointerSteer);
+      canvas.addEventListener("pointermove", this.onPointerSteer);
+      canvas.addEventListener("pointerup", this.onPointerEnd);
+      canvas.addEventListener("pointerleave", this.onPointerEnd);
+      canvas.addEventListener("pointercancel", this.onPointerEnd);
     }
 
     this.observer = new ResizeObserver(() => this.resize());
@@ -553,6 +569,11 @@ export class LaunchEngine {
     this.observer?.disconnect();
     this.canvas.removeEventListener("pointermove", this.onPointerMove);
     this.canvas.removeEventListener("pointerleave", this.onPointerLeave);
+    this.canvas.removeEventListener("pointerdown", this.onPointerSteer);
+    this.canvas.removeEventListener("pointermove", this.onPointerSteer);
+    this.canvas.removeEventListener("pointerup", this.onPointerEnd);
+    this.canvas.removeEventListener("pointerleave", this.onPointerEnd);
+    this.canvas.removeEventListener("pointercancel", this.onPointerEnd);
     window.removeEventListener("keydown", this.onKeyDown);
     window.removeEventListener("keyup", this.onKeyUp);
     this.scene.traverse((obj) => {

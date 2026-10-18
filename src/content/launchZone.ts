@@ -16,6 +16,7 @@ export interface LaunchZoneConfig {
   thrust: number;
   rotateSpeed: number;
   softLandingSpeed: number;
+  cameraFollowOffset: number;
   exhaustColor: number;
   flameColor: number;
   tiers: Record<DeviceTier, TierConfig>;
@@ -25,10 +26,11 @@ export const launchZone: LaunchZoneConfig = {
   rocketScale: 1,
   tiltFactor: 0.4,
   maxTilt: 0.45,
-  gravity: 2.2,
-  thrust: 7.5,
-  rotateSpeed: 2.4,
-  softLandingSpeed: 1.1,
+  gravity: 2.6,
+  thrust: 7.2,
+  rotateSpeed: 2.6,
+  softLandingSpeed: 1.3,
+  cameraFollowOffset: 1.4,
   exhaustColor: 0xf0a840,
   flameColor: 0xe05252,
   tiers: {

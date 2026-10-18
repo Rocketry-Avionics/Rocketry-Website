@@ -53,9 +53,11 @@ export class LaunchEngine {
   private apogee = 0;
   private landed = false;
   private crashed = false;
+  private hasFlown = false;
   private groundY = 0;
   private halfW = 0;
   private halfH = 0;
+  private stars: THREE.Points;
 
   private onKeyDown = (e: KeyboardEvent) => {
     if (this.mode !== "free") return;
@@ -105,6 +107,7 @@ export class LaunchEngine {
   private touchThrust = false;
   private touchLeft = false;
   private touchRight = false;
+  private pointerTilt: number | null = null;
   private canvas: HTMLCanvasElement;
 
   constructor(
@@ -159,7 +162,8 @@ export class LaunchEngine {
     }
 
     this.flame = this.buildFlame();
-    this.scene.add(this.flame);
+    this.flame.position.set(0, -1.02, 0);
+    this.rocket.add(this.flame);
 
     const starGeo = new THREE.BufferGeometry();
     const starCount = 90;
@@ -178,7 +182,8 @@ export class LaunchEngine {
       depthWrite: false,
     });
     this.disposables.push(starGeo, starMat);
-    this.scene.add(new THREE.Points(starGeo, starMat));
+    this.stars = new THREE.Points(starGeo, starMat);
+    this.scene.add(this.stars);
 
     const count = this.cfg.particleCount;
     const geo = new THREE.BufferGeometry();
@@ -352,6 +357,10 @@ export class LaunchEngine {
     }
   }
 
+  setPointerTilt(tilt: number | null) {
+    this.pointerTilt = tilt;
+  }
+
   reset() {
     this.rocket.position.set(0, this.groundY + 0.85, 0);
     this.rocket.rotation.z = 0;
@@ -359,6 +368,8 @@ export class LaunchEngine {
     this.apogee = 0;
     this.landed = false;
     this.crashed = false;
+    this.hasFlown = false;
+    this.camera.position.y = 0;
     this.input = { rotate: 0, throttle: 0 };
     this.emitState();
   }
@@ -375,18 +386,21 @@ export class LaunchEngine {
     });
   }
 
-  private emitParticle(intensity: number) {
+  private emitParticle(speed: number) {
     const { positions, velocities, life, maxLife } = this.particleData;
     const count = life.length;
-    const nozzleY = this.rocket.position.y - 0.72;
+    const theta = this.rocket.rotation.z;
+    const nozzleX = this.rocket.position.x + Math.sin(theta) * 0.72;
+    const nozzleY = this.rocket.position.y - Math.cos(theta) * 0.72;
+    const exX = Math.sin(theta);
+    const exY = -Math.cos(theta);
     const i = this.particleData.cursor;
     this.particleData.cursor = (i + 1) % count;
-    positions[i * 3] = this.rocket.position.x + (Math.random() - 0.5) * 0.1;
+    positions[i * 3] = nozzleX + (Math.random() - 0.5) * 0.08;
     positions[i * 3 + 1] = nozzleY;
-    positions[i * 3 + 2] = (Math.random() - 0.5) * 0.1;
-    const spread = 0.5;
-    velocities[i * 2] = (Math.random() - 0.5) * spread - Math.sin(this.rocket.rotation.z) * 1.2;
-    velocities[i * 2 + 1] = -1.4 * intensity + Math.random() * 0.4;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 0.08;
+    velocities[i * 2] = exX * speed + (Math.random() - 0.5) * 0.5;
+    velocities[i * 2 + 1] = exY * speed + (Math.random() - 0.5) * 0.5;
     life[i] = 1;
     maxLife[i] = 0.5 + Math.random() * 0.4;
   }
@@ -429,28 +443,38 @@ export class LaunchEngine {
         launchZone.maxTilt
       );
       this.rocket.rotation.z += (-tilt - this.rocket.rotation.z) * 0.12;
-      const speed = Math.abs(this.target.y - this.rocket.position.y) + Math.abs(this.target.x - this.rocket.position.x);
+      const speed =
+        Math.abs(this.target.y - this.rocket.position.y) +
+        Math.abs(this.target.x - this.rocket.position.x);
       const intensity = Math.min(1, 0.25 + speed * 0.35);
       this.flame.visible = true;
-      this.flame.position.set(this.rocket.position.x, this.rocket.position.y - 1.05, 0);
       this.flame.scale.setScalar(0.7 + intensity * 0.6);
       const now = time;
       const rate = this.cfg.exhaustRate * 0.024 * (0.6 + intensity);
       if (now - this.lastEmit > rate) {
         this.lastEmit = now;
-        this.emitParticle(intensity);
+        this.emitParticle(0.9 + intensity * 0.6);
       }
     } else {
-      const angle = this.rocket.rotation.z;
       if (!this.landed && !this.crashed) {
-        this.vel.x += Math.sin(angle) * launchZone.thrust * this.input.throttle * dt;
+        if (this.pointerTilt !== null) {
+          this.rocket.rotation.z = THREE.MathUtils.clamp(
+            this.pointerTilt * launchZone.maxTilt,
+            -0.6,
+            0.6
+          );
+        } else {
+          this.rocket.rotation.z = THREE.MathUtils.clamp(
+            this.rocket.rotation.z + this.input.rotate * launchZone.rotateSpeed * dt,
+            -0.6,
+            0.6
+          );
+        }
+        const theta = this.rocket.rotation.z;
+        this.vel.x += Math.sin(theta) * launchZone.thrust * this.input.throttle * dt;
         this.vel.y +=
-          (Math.cos(angle) * launchZone.thrust * this.input.throttle - launchZone.gravity) * dt;
-        this.rocket.rotation.z = THREE.MathUtils.clamp(
-          angle + this.input.rotate * launchZone.rotateSpeed * dt,
-          -0.6,
-          0.6
-        );
+          (Math.cos(theta) * launchZone.thrust * this.input.throttle - launchZone.gravity) * dt;
+        this.vel.x *= 1 / (1 + 0.35 * dt);
         this.rocket.position.x = THREE.MathUtils.clamp(
           this.rocket.position.x + this.vel.x * dt,
           -this.halfW,
@@ -463,32 +487,44 @@ export class LaunchEngine {
           this.vel.x = 0;
         }
         this.rocket.position.y += this.vel.y * dt;
-        if (this.rocket.position.y > this.halfH) {
-          this.rocket.position.y = this.halfH;
-          this.vel.y = Math.min(this.vel.y, 0);
-        }
+        if (this.rocket.position.y - this.groundY > 0.6) this.hasFlown = true;
+
         const floor = this.groundY + 0.85;
-        if (this.rocket.position.y <= floor) {
+        if (this.vel.y < 0 && this.rocket.position.y <= floor) {
           this.rocket.position.y = floor;
-          if (Math.abs(this.vel.y) <= launchZone.softLandingSpeed && Math.abs(this.rocket.rotation.z) < 0.25) {
-            this.landed = true;
-          } else {
-            this.crashed = true;
+          if (this.hasFlown) {
+            if (
+              Math.abs(this.vel.y) <= launchZone.softLandingSpeed &&
+              Math.abs(this.rocket.rotation.z) < 0.25
+            ) {
+              this.landed = true;
+            } else {
+              this.crashed = true;
+            }
           }
           this.vel.set(0, 0);
           this.emitState();
         }
         this.apogee = Math.max(this.apogee, this.rocket.position.y - this.groundY);
+      } else if (this.landed && this.input.throttle === 1) {
+        this.landed = false;
       }
+
+      const camTarget = Math.max(
+        0,
+        this.rocket.position.y - launchZone.cameraFollowOffset
+      );
+      this.camera.position.y += (camTarget - this.camera.position.y) * Math.min(1, 5 * dt);
+      this.stars.position.y = this.camera.position.y * 0.6;
+
       this.flame.visible = this.input.throttle === 1 && !this.landed && !this.crashed;
-      this.flame.position.set(this.rocket.position.x, this.rocket.position.y - 1.05, 0);
       this.flame.scale.setScalar(0.8 + Math.random() * 0.4);
       if (this.input.throttle === 1 && !this.landed && !this.crashed) {
         const rate = this.cfg.exhaustRate * 0.016;
         if (time - this.lastEmit > rate) {
           this.lastEmit = time;
-          this.emitParticle(1);
-          this.emitParticle(1);
+          this.emitParticle(2.2);
+          this.emitParticle(1.8);
         }
       }
       this.stateTimer += dt;

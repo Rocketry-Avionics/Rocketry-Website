@@ -140,32 +140,41 @@ export default function HomePage() {
       <section>
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <div className="relative overflow-hidden rounded-2xl border border-line bg-[radial-gradient(ellipse_at_bottom_left,rgba(224,82,82,0.16),transparent_55%),radial-gradient(ellipse_at_top_right,rgba(61,111,158,0.16),transparent_55%)] p-8 sm:p-12">
-            <div className="flex max-w-2xl flex-col gap-5">
-              <h2 className="font-display text-3xl font-bold tracking-tight text-paper sm:text-4xl">
-                Want to build rockets with us?
-              </h2>
-              <p className="text-base leading-relaxed text-muted">
-                We recruit from all batches and all branches: if you want to work on
-                flight hardware, embedded software, radio links or simulation, reach out.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 rounded-full bg-flame px-6 py-3 font-display text-sm font-semibold text-ink transition-opacity hover:opacity-90"
-                >
-                  Contact us
-                </Link>
-                <a
-                  href={site.socials[0].href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-6 py-3 font-display text-sm font-semibold text-paper transition-colors hover:border-flame/60 hover:text-flame"
-                >
-                  <LinkedInIcon className="h-4 w-4" />
-                  Follow on LinkedIn
-                </a>
-              </div>
+          <div className="flex max-w-2xl flex-col gap-5">
+            <h2 className="font-display text-3xl font-bold tracking-tight text-paper sm:text-4xl">
+              Build with us. <span className="text-flame">Back us.</span> Or just say
+              hi.
+            </h2>
+            <p className="text-base leading-relaxed text-muted">
+              Join the <b className="font-semibold text-paper">crew</b> that designs,
+              breaks and flies. Put your <b className="font-semibold text-paper">name on the pad</b> as a
+              sponsor and watch it leave the ground with our thanks. Either way, it
+              all starts with a hello.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 rounded-full bg-flame px-6 py-3 font-display text-sm font-semibold text-ink transition-opacity hover:opacity-90"
+              >
+                Join the crew
+              </Link>
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 rounded-full border border-amber/60 bg-amber/10 px-6 py-3 font-display text-sm font-semibold text-amber shadow-[0_0_28px_-10px_rgba(240,168,64,0.55)] transition-colors hover:bg-amber/20"
+              >
+                Sponsor us
+              </Link>
+              <a
+                href={site.socials[0].href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-6 py-3 font-display text-sm font-semibold text-paper transition-colors hover:border-flame/60 hover:text-flame"
+              >
+                <LinkedInIcon className="h-4 w-4" />
+                Follow
+              </a>
             </div>
+          </div>
           </div>
         </div>
       </section>

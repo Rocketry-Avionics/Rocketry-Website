@@ -86,7 +86,7 @@ export default function HomePage() {
       </section>
 
       <section className="border-b border-line/60 bg-charcoal">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-4 px-4 py-10 sm:px-6 lg:grid-cols-4">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-4 px-4 py-10 sm:grid-cols-3 sm:px-6">
           {stats.map((stat) => (
             <div
               key={stat.label}
@@ -96,31 +96,19 @@ export default function HomePage() {
               <p className="text-sm text-muted">{stat.label}</p>
             </div>
           ))}
-          <Link
-            href="/avionics"
-            className="group flex flex-col items-center justify-center gap-1 rounded-2xl border border-line bg-surface/60 p-6 text-center transition-all duration-200 hover:-translate-y-0.5 hover:border-flame/50 hover:shadow-[0_0_36px_-14px_rgba(224,82,82,0.45)]"
-          >
-            <p className="font-display text-2xl font-bold text-paper transition-colors group-hover:text-flame">
-              Explore
-            </p>
-            <p className="inline-flex items-center gap-1 text-sm text-muted">
-              the mini-projects
-              <ArrowRight
-                className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
-                aria-hidden="true"
-              />
-            </p>
-          </Link>
           <a
             href="#subsystems"
             className="group flex flex-col items-center justify-center gap-1 rounded-2xl border border-line bg-surface/60 p-6 text-center transition-all duration-200 hover:-translate-y-0.5 hover:border-sky/50 hover:shadow-[0_0_36px_-14px_rgba(61,111,158,0.5)]"
           >
             <p className="font-display text-2xl font-bold text-paper transition-colors group-hover:text-sky">
-              Meet
+              Explore
             </p>
             <p className="inline-flex items-center gap-1 text-sm text-muted">
               the subsystems
-              <ArrowRight className="h-3.5 w-3.5 rotate-90 transition-transform group-hover:translate-y-0.5" aria-hidden="true" />
+              <ArrowRight
+                className="h-3.5 w-3.5 rotate-90 transition-transform group-hover:translate-y-0.5"
+                aria-hidden="true"
+              />
             </p>
           </a>
         </div>
@@ -142,8 +130,9 @@ export default function HomePage() {
           <div className="relative overflow-hidden rounded-2xl border border-line bg-[radial-gradient(ellipse_at_bottom_left,rgba(224,82,82,0.16),transparent_55%),radial-gradient(ellipse_at_top_right,rgba(61,111,158,0.16),transparent_55%)] p-8 sm:p-12">
           <div className="flex max-w-2xl flex-col gap-5">
             <h2 className="font-display text-3xl font-bold tracking-tight text-paper sm:text-4xl">
-              Build with us. <span className="text-flame">Back us.</span> Or just say
-              hi.
+              <b className="font-bold text-paper">Design</b> it.{" "}
+              <b className="font-bold text-paper">Build</b> it.{" "}
+              <b className="font-bold text-flame">Fly</b> it.
             </h2>
             <p className="text-base leading-relaxed text-muted">
               Join the <b className="font-semibold text-paper">crew</b> that designs,

@@ -130,8 +130,9 @@ export default function HomePage() {
           <div className="relative overflow-hidden rounded-2xl border border-line bg-[radial-gradient(ellipse_at_bottom_left,rgba(224,82,82,0.16),transparent_55%),radial-gradient(ellipse_at_top_right,rgba(61,111,158,0.16),transparent_55%)] p-8 sm:p-12">
           <div className="flex max-w-2xl flex-col gap-5">
             <h2 className="font-display text-3xl font-bold tracking-tight text-paper sm:text-4xl">
-              Build with us. <span className="text-flame">Back us.</span> Or just say
-              hi.
+              <b className="font-bold text-paper">Design</b> it.{" "}
+              <b className="font-bold text-paper">Build</b> it.{" "}
+              <b className="font-bold text-flame">Fly</b> it.
             </h2>
             <p className="text-base leading-relaxed text-muted">
               Join the <b className="font-semibold text-paper">crew</b> that designs,

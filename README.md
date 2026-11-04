@@ -161,8 +161,13 @@ need Vercel to develop locally. A custom domain is planned later.
 
 ## Contributing
 
-- Branch from `main` using `feat/<topic>` or `fix/<topic>`.
-- Keep commits small and focused; one concern per commit.
-- Never present unfinished work as done: status badges on the site must stay
-  honest (`Active`, `In Progress`, `Planned`).
+We welcome contributions from leads, core members, crew and recruits!
+
+Please read our [Contributing Guide](CONTRIBUTING.md) for full step-by-step instructions on starring the repo, local setup, branching standards, commit rules, and opening a Pull Request.
+
+Key principles to keep in mind:
+- Always branch from `main` using `feat/<topic>`, `fix/<topic>` or `docs/<topic>`.
+- Keep commits small, atomic and focused; one concern per commit.
+- Never present unfinished work as done: status badges on the site must stay honest (`Active`, `In Progress`, `Planned`).
 - No em dashes anywhere in UI copy, content files or docs.
+- Assign `@BlazingFire27` or team leads for PR review.

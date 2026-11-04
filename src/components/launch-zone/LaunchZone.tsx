@@ -19,7 +19,7 @@ export default function LaunchZone() {
   const tier = useDeviceTier();
 
   return (
-    <div className="relative h-full w-full overflow-hidden rounded-2xl border border-line bg-gradient-to-b from-charcoal via-ink to-ink">
+    <div className="relative h-full w-full overflow-hidden rounded-2xl border border-line bg-gradient-to-b from-charcoal via-ink to-ink touch-none">
       {reduced ? (
         <div className="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
           <Image

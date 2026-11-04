@@ -66,5 +66,5 @@ export default function RocketCanvas({ mode, tier, engineRef, onState }: RocketC
     );
   }
 
-  return <canvas ref={canvasRef} className="block h-full w-full" />;
+  return <canvas ref={canvasRef} className="block h-full w-full touch-none select-none" />;
 }

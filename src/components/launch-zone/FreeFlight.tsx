@@ -54,17 +54,25 @@ export default function FreeFlight({ className = "" }: { className?: string }) {
   }, [open]);
 
   const holdProps = (input: { rotate?: -1 | 0 | 1; throttle?: 0 | 1 }) => {
-    const release = () => {
+    const release = (event: React.PointerEvent) => {
+      try {
+        const el = event.currentTarget as HTMLElement;
+        if (el?.hasPointerCapture(event.pointerId)) {
+          el.releasePointerCapture(event.pointerId);
+        }
+      } catch {}
       if (input.rotate !== undefined) engineRef.current?.setInput({ rotate: 0 });
       if (input.throttle !== undefined) engineRef.current?.setInput({ throttle: 0 });
     };
     return {
       onPointerDown: (event: React.PointerEvent) => {
         event.preventDefault();
+        try {
+          (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
+        } catch {}
         engineRef.current?.setInput(input);
       },
       onPointerUp: release,
-      onPointerLeave: release,
       onPointerCancel: release,
     };
   };
@@ -93,7 +101,7 @@ export default function FreeFlight({ className = "" }: { className?: string }) {
             onClick={() => setOpen(false)}
             className="absolute inset-0 cursor-default bg-ink/85 backdrop-blur-sm"
           />
-          <div className="relative h-[75vh] w-full max-w-4xl overflow-hidden rounded-2xl border border-line bg-charcoal">
+          <div className="relative h-[75vh] w-full max-w-4xl overflow-hidden rounded-2xl border border-line bg-charcoal touch-none select-none">
             {!reduced ? (
               <RocketCanvas
                 mode="free"
@@ -152,7 +160,7 @@ export default function FreeFlight({ className = "" }: { className?: string }) {
                   type="button"
                   aria-label="Rotate left"
                   {...holdProps({ rotate: -1 })}
-                  className="rounded-full border border-line bg-ink/80 p-3 text-paper backdrop-blur transition-colors hover:border-flame/60 active:bg-raised"
+                  className="touch-none select-none rounded-full border border-line bg-ink/80 p-3 text-paper backdrop-blur transition-colors hover:border-flame/60 active:bg-raised"
                 >
                   <ChevronLeft className="h-5 w-5" aria-hidden="true" />
                 </button>
@@ -160,7 +168,7 @@ export default function FreeFlight({ className = "" }: { className?: string }) {
                   type="button"
                   aria-label="Thrust"
                   {...holdProps({ throttle: 1 })}
-                  className="rounded-full border border-flame/50 bg-flame/20 p-3 text-paper backdrop-blur transition-colors hover:bg-flame/30 active:bg-flame/50"
+                  className="touch-none select-none rounded-full border border-flame/50 bg-flame/20 p-3 text-paper backdrop-blur transition-colors hover:bg-flame/30 active:bg-flame/50"
                 >
                   <ArrowUp className="h-5 w-5" aria-hidden="true" />
                 </button>
@@ -168,7 +176,7 @@ export default function FreeFlight({ className = "" }: { className?: string }) {
                   type="button"
                   aria-label="Rotate right"
                   {...holdProps({ rotate: 1 })}
-                  className="rounded-full border border-line bg-ink/80 p-3 text-paper backdrop-blur transition-colors hover:border-flame/60 active:bg-raised"
+                  className="touch-none select-none rounded-full border border-line bg-ink/80 p-3 text-paper backdrop-blur transition-colors hover:border-flame/60 active:bg-raised"
                 >
                   <ChevronRight className="h-5 w-5" aria-hidden="true" />
                 </button>

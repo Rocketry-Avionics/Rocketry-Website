@@ -107,8 +107,7 @@ export class LaunchEngine {
       this.input.rotate = 0;
   };
 
-  private onPointerMove = (e: PointerEvent) => {
-    if (this.mode !== "follow") return;
+  private updateTargetFromPointer = (e: PointerEvent) => {
     const rect = this.canvas.getBoundingClientRect();
     const nx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
     const ny = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
@@ -119,18 +118,55 @@ export class LaunchEngine {
     this.hasTarget = true;
   };
 
-  private onPointerLeave = () => {
-    this.hasTarget = false;
+  private onPointerDown = (e: PointerEvent) => {
+    if (this.mode !== "follow") return;
+    try {
+      this.canvas.setPointerCapture(e.pointerId);
+    } catch {}
+    this.updateTargetFromPointer(e);
+  };
+
+  private onPointerMove = (e: PointerEvent) => {
+    if (this.mode !== "follow") return;
+    this.updateTargetFromPointer(e);
+  };
+
+  private onPointerUp = (e: PointerEvent) => {
+    if (this.mode !== "follow") return;
+    try {
+      if (this.canvas.hasPointerCapture(e.pointerId)) {
+        this.canvas.releasePointerCapture(e.pointerId);
+      }
+    } catch {}
+    if (e.pointerType === "touch" || e.pointerType === "pen") {
+      this.hasTarget = false;
+    }
+  };
+
+  private onPointerLeave = (e: PointerEvent) => {
+    if (e.pointerType === "mouse") {
+      this.hasTarget = false;
+    }
   };
 
   private onPointerSteer = (event: PointerEvent) => {
     if (event.pointerType === "mouse" && event.buttons === 0) return;
+    if (event.type === "pointerdown") {
+      try {
+        this.canvas.setPointerCapture(event.pointerId);
+      } catch {}
+    }
     const rect = this.canvas.getBoundingClientRect();
     const nx = ((event.clientX - rect.left) / rect.width) * 2 - 1;
     this.pointerTilt = nx;
   };
 
-  private onPointerEnd = () => {
+  private onPointerEnd = (event: PointerEvent) => {
+    try {
+      if (this.canvas.hasPointerCapture(event.pointerId)) {
+        this.canvas.releasePointerCapture(event.pointerId);
+      }
+    } catch {}
     this.pointerTilt = null;
   };
 
@@ -369,7 +405,10 @@ export class LaunchEngine {
     };
 
     if (mode === "follow") {
+      canvas.addEventListener("pointerdown", this.onPointerDown);
       canvas.addEventListener("pointermove", this.onPointerMove);
+      canvas.addEventListener("pointerup", this.onPointerUp);
+      canvas.addEventListener("pointercancel", this.onPointerUp);
       canvas.addEventListener("pointerleave", this.onPointerLeave);
     } else {
       window.addEventListener("keydown", this.onKeyDown);
@@ -830,7 +869,10 @@ export class LaunchEngine {
   dispose() {
     this.setRunning(false);
     this.observer?.disconnect();
+    this.canvas.removeEventListener("pointerdown", this.onPointerDown);
     this.canvas.removeEventListener("pointermove", this.onPointerMove);
+    this.canvas.removeEventListener("pointerup", this.onPointerUp);
+    this.canvas.removeEventListener("pointercancel", this.onPointerUp);
     this.canvas.removeEventListener("pointerleave", this.onPointerLeave);
     this.canvas.removeEventListener("pointerdown", this.onPointerSteer);
     this.canvas.removeEventListener("pointermove", this.onPointerSteer);

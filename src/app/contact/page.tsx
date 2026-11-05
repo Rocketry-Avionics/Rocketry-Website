@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Globe, MapPin } from "lucide-react";
+import { Globe, Mail, MapPin } from "lucide-react";
 import LinkedInIcon from "@/components/ui/LinkedInIcon";
 import { site } from "@/content/site";
 import ContactForm from "./ContactForm";
@@ -19,12 +19,24 @@ export default function ContactPage() {
           <SectionHeading
             eyebrow="Contact"
             title="Say hello"
-            description="Recruits, collaborators, sponsors: we read everything. Reach us through the form or directly on LinkedIn."
+            description="Recruits, collaborators, sponsors: we read everything. Reach us through the form, by email or directly on LinkedIn."
           />
           <ContactForm />
         </div>
 
         <div className="flex flex-col gap-4">
+          <a
+            href={`mailto:${site.email}`}
+            className="flex items-center gap-4 rounded-2xl border border-line bg-surface p-5 transition-colors hover:border-flame/60"
+          >
+            <span className="rounded-full border border-line bg-raised p-3 text-flame">
+              <Mail className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <span>
+              <p className="font-display text-sm font-semibold text-paper">Email</p>
+              <p className="text-sm text-muted">{site.email}</p>
+            </span>
+          </a>
           <a
             href={site.socials[0].href}
             target="_blank"

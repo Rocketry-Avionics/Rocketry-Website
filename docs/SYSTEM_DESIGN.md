@@ -36,7 +36,8 @@ Audiences: student recruits (freshers), sponsors, SEDS / fest visitors.
 | `/` | Hero over a living node-network background with hook-word highlights, full-width interactive **Launch Zone** strip, community-driven "Why we build", dynamic mini-project stats with quick-link tiles, subsystem cards with hover glow, click-to-open dossiers and per-subsystem page links, join/sponsor CTA band | Build |
 | `/avionics` | Single page, anchored sections for the 6 projects (below). Each card shows its status timeline inline (current entry highlighted) and opens a project dossier: media carousel with prev/next + fullscreen expand (arrow keys navigate, Escape closes), timeline detail, points, tags | Build |
 | `/team` | Subsystem leads in a compact 2x2 grid (avionics has two co-leads, no single project lead), avionics core in a single five-column row, crew in a 4x4 grid. Every member card is clickable and opens a dossier modal: enlargeable photo (placeholder until real photos), Gmail (compulsory slot), LinkedIn/Twitter/Instagram shown only when filled. Close button lives in a header row so it never overlaps the photo | Build |
-| `/contact` | Web3Forms/Formspree form + socials (LinkedIn) + email | Build |
+| `/contact` | Web3Forms/Formspree form + cards for the official email (`contact@project-rocketry.co.in`), LinkedIn, SEDS Celestia and campus location | Build |
+| `/sponsor` | Sponsor page: hero ("Put your name on the pad"), real engineering impact, fund allocation categories (no invented percentages), indicative tiers (no prices), mailto CTA to `sponsors@project-rocketry.co.in` and a quick inquiry form that composes a prefilled email. All copy in `src/content/sponsor.ts`. Every "Sponsor us" button routes here | Build |
 | `/structural` | **Parked**: no page until official info is provided | Parked |
 | `/propulsion` | **Parked**: no page until official info is provided | Parked |
 | Legal/imprint | Added only if/when required | Parked |

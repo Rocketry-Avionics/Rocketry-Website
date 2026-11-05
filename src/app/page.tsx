@@ -148,7 +148,7 @@ export default function HomePage() {
                 Join the crew
               </Link>
               <Link
-                href="/contact"
+                href="/sponsor"
                 className="inline-flex items-center gap-2 rounded-full border border-amber/60 bg-amber/10 px-6 py-3 font-display text-sm font-semibold text-amber shadow-[0_0_28px_-10px_rgba(240,168,64,0.55)] transition-colors hover:bg-amber/20"
               >
                 Sponsor us

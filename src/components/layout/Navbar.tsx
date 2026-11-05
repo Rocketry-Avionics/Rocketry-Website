@@ -51,7 +51,7 @@ export default function Navbar() {
             </Link>
           ))}
           <Link
-            href="/contact"
+            href="/sponsor"
             className="ml-2 inline-flex items-center rounded-full border border-amber/60 bg-amber/10 px-4 py-2 font-display text-sm font-semibold text-amber shadow-[0_0_24px_-8px_rgba(240,168,64,0.55)] transition-colors hover:bg-amber/20"
           >
             Sponsor us
@@ -84,7 +84,7 @@ export default function Navbar() {
             </Link>
           ))}
           <Link
-            href="/contact"
+            href="/sponsor"
             onClick={() => setOpen(false)}
             className="mt-2 inline-flex items-center rounded-full border border-amber/60 bg-amber/10 px-4 py-2 font-display text-sm font-semibold text-amber shadow-[0_0_24px_-8px_rgba(240,168,64,0.55)]"
           >

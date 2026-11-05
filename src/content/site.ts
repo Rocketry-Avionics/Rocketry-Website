@@ -12,7 +12,8 @@ export const site = {
     "*Project Rocketry* is a student-run team under SEDS Celestia at BITS Pilani, K.K. Birla Goa Campus. We are researching and designing a *hybrid engine-powered, retro-propulsive rocket* with telemetry-based control and thrust vector control (TVC).",
   description:
     "A student-run rocketry project under SEDS Celestia at BITS Goa, designing avionics, structures and propulsion for a hybrid-engine, retro-propulsive rocket capable of thrust vector control.",
-  email: null as string | null,
+  email: "contact@project-rocketry.co.in",
+  sponsorEmail: "sponsors@project-rocketry.co.in",
   socials: [
     {
       label: "LinkedIn",
@@ -23,6 +24,11 @@ export const site = {
       label: "SEDS Celestia",
       href: "https://sedscelestia.org",
       icon: "globe",
+    },
+    {
+      label: "GitHub",
+      href: "https://github.com/Rocketry-Avionics",
+      icon: "github",
     },
   ] as SocialLink[],
 } as const;

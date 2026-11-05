@@ -29,7 +29,7 @@ us. Nothing on the site is faked; anything not finished is labelled as such.
 │   ├── brand/                  # official logo
 │   └── media/                  # project photos (per subsystem folders)
 ├── src/
-│   ├── app/                    # routes: /, /avionics, /team, /contact
+│   ├── app/                    # routes: /, /avionics, /team, /contact, /sponsor
 │   ├── components/
 │   │   ├── avionics/           # project dossiers, carousel, panels
 │   │   ├── launch-zone/        # Three.js interactive rocket
@@ -38,7 +38,8 @@ us. Nothing on the site is faked; anything not finished is labelled as such.
 │   │   ├── team/               # member photos, dossier modal
 │   │   └── ui/                 # badges, icons, shared primitives
 │   ├── content/                # ALL site text and data (edit here, not in UI code)
-│   │   ├── site.ts             # name, mission, socials
+│   │   ├── site.ts             # name, mission, emails, socials
+│   │   ├── sponsor.ts          # sponsor page copy, allocation, tiers
 │   │   ├── projects.ts         # avionics mini-projects (+ structural/propulsion slots)
 │   │   ├── subsystems.ts       # subsystem cards
 │   │   ├── team.ts             # leads, core, crew

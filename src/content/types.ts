@@ -80,3 +80,27 @@ export interface MiniProjectRef {
   id: string;
   title: string;
 }
+
+export type SponsorIcon =
+  | "cpu"
+  | "flame"
+  | "rocket"
+  | "users"
+  | "circuit"
+  | "gauge"
+  | "wrench"
+  | "shield"
+  | "flag";
+
+export interface SponsorPoint {
+  icon: SponsorIcon;
+  title: string;
+  body: string;
+}
+
+export interface SponsorTier {
+  name: string;
+  tagline: string;
+  benefits: string[];
+  featured?: boolean;
+}

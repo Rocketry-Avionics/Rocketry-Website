@@ -1,13 +1,18 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Globe } from "lucide-react";
+import { Globe, Mail } from "lucide-react";
+import GitHubIcon from "@/components/ui/GitHubIcon";
 import LinkedInIcon from "@/components/ui/LinkedInIcon";
 import { nav } from "@/content/nav";
 import { site } from "@/content/site";
 
-const iconFor: Record<string, typeof Globe | typeof LinkedInIcon> = {
+const iconFor: Record<
+  string,
+  typeof Globe | typeof LinkedInIcon | typeof GitHubIcon
+> = {
   linkedin: LinkedInIcon,
   globe: Globe,
+  github: GitHubIcon,
 };
 
 export default function Footer() {
@@ -28,6 +33,13 @@ export default function Footer() {
             </span>
           </div>
           <p className="max-w-xs text-sm leading-relaxed text-muted">{site.tagline}</p>
+          <a
+            href={`mailto:${site.email}`}
+            className="inline-flex w-fit items-center gap-2 text-sm text-muted transition-colors hover:text-flame"
+          >
+            <Mail className="h-4 w-4" aria-hidden="true" />
+            {site.email}
+          </a>
         </div>
 
         <div className="flex flex-col gap-2">

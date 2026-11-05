@@ -154,6 +154,23 @@ Our own concept (not qBITS' Bloch sphere): a rocket that flies.
   links), device-tiered, paused off-screen and on hidden tabs, static frame
   under reduced motion. The hero title carries a slow gradient shimmer.
 
+### Cosmic background (global, scroll reactive)
+A single fixed 2D canvas (`src/components/layout/CosmicBackground.tsx`, mounted in
+the root layout at `-z-10`) paints a deep-space star field behind every page. It is
+deliberately plain Canvas 2D, not a second Three.js scene.
+- Three layers: dust (70%, pinpoints), midfield (25%) and focal stars (5%) with a
+  soft halo and four point diffraction spikes. Tints come from the club palette
+  (paper white, a pale sky blue, a pale amber).
+- Scroll drives the stars: a critically damped spring follows scroll velocity, stars
+  drift opposite to the scroll direction with per-layer parallax and short streaks,
+  then ease back to rest. Idle state is a very slow twinkle.
+- Power rules: devicePixelRatio is capped (1 on low and mid tiers, 1.25 on high), the
+  rAF loop only runs while scrolling or settling, idle twinkle runs on a slow timer,
+  everything stops on a hidden tab, and `prefers-reduced-motion` gets one static
+  snapshot with no listeners or loop.
+- All tuning (counts, sizes, tints, spring, tiers) lives in `src/content/cosmos.ts`;
+  generation, sprites, rendering and the spring live in `src/lib/cosmos/`.
+
 ### All parameters from `launchZone.ts`, tiered by device
 ```ts
 {

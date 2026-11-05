@@ -33,7 +33,7 @@ us. Nothing on the site is faked; anything not finished is labelled as such.
 │   ├── components/
 │   │   ├── avionics/           # project dossiers, carousel, panels
 │   │   ├── launch-zone/        # Three.js interactive rocket
-│   │   ├── layout/             # navbar, footer
+│   │   ├── layout/             # navbar, footer, cosmic starfield background
 │   │   ├── subsystems/         # subsystem dossier modal
 │   │   ├── team/               # member photos, dossier modal
 │   │   └── ui/                 # badges, icons, shared primitives
@@ -43,8 +43,9 @@ us. Nothing on the site is faked; anything not finished is labelled as such.
 │   │   ├── subsystems.ts       # subsystem cards
 │   │   ├── team.ts             # leads, core, crew
 │   │   ├── stats.ts            # dynamic counters
-│   │   └── launchZone.ts       # flight physics config
-│   └── lib/                    # hooks, helpers
+│   │   ├── launchZone.ts       # flight physics config
+│   │   └── cosmos.ts           # starfield background tuning
+│   └── lib/                    # hooks, helpers, starfield engine (cosmos/)
 └── package.json
 ```
 

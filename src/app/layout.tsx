@@ -3,6 +3,7 @@ import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import CosmicBackground from "@/components/layout/CosmicBackground";
 import { site } from "@/content/site";
 import { Analytics } from "@vercel/analytics/react";
 
@@ -41,6 +42,7 @@ export default function RootLayout({
       className={`${inter.variable} ${spaceGrotesk.variable}`}
     >
       <body className="min-h-dvh bg-ink font-sans text-paper antialiased">
+        <CosmicBackground />
         <Navbar />
         <main>{children}</main>
         <Footer />

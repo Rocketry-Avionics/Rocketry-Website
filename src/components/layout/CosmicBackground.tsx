@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { cosmos } from "@/content/cosmos";
 import { useDeviceTier } from "@/lib/hooks/useDeviceTier";
+import { useReducedMotion } from "@/lib/hooks/useReducedMotion";
 import { generateStars } from "@/lib/cosmos/stars";
 import { createFocalSprites } from "@/lib/cosmos/sprites";
 import { drawStars } from "@/lib/cosmos/render";
@@ -11,6 +12,7 @@ import { ScrollSpring } from "@/lib/cosmos/scrollSpring";
 export default function CosmicBackground() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const tier = useDeviceTier();
+  const reduced = useReducedMotion();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -50,7 +52,7 @@ export default function CosmicBackground() {
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      render(performance.now() / 1000);
+      render(reduced ? 0 : performance.now() / 1000);
     };
 
     const frame = (now: number) => {
@@ -101,6 +103,12 @@ export default function CosmicBackground() {
     const onResize = () => resize();
     resize(true);
     window.addEventListener("resize", onResize);
+
+    if (reduced) {
+      // One still snapshot: no scroll listener, no loop, no timer.
+      return () => window.removeEventListener("resize", onResize);
+    }
+
     window.addEventListener("scroll", wake, { passive: true });
     document.addEventListener("visibilitychange", onVisibility);
     wake();
@@ -112,7 +120,7 @@ export default function CosmicBackground() {
       window.removeEventListener("scroll", wake);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [tier]);
+  }, [tier, reduced]);
 
   return (
     <canvas

@@ -16,7 +16,7 @@ const structuredData = {
 
 export default function Faq() {
   return (
-    <section id="faq" className="scroll-mt-20 border-b border-line/60 bg-charcoal">
+    <section id="faq" className="scroll-mt-20 border-b border-line/60">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

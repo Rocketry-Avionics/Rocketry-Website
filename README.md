@@ -39,7 +39,8 @@ us. Nothing on the site is faked; anything not finished is labelled as such.
 │   │   └── ui/                 # badges, icons, shared primitives
 │   ├── content/                # ALL site text and data (edit here, not in UI code)
 │   │   ├── site.ts             # name, mission, emails, socials
-│   │   ├── sponsor.ts          # sponsor page copy, allocation, tiers
+│   │   ├── sponsor.ts          # sponsor page copy, allocation, tiers, in-kind
+│   │   ├── faq.ts              # sponsor FAQ (grouped questions and answers)
 │   │   ├── projects.ts         # avionics mini-projects (+ structural/propulsion slots)
 │   │   ├── subsystems.ts       # subsystem cards
 │   │   ├── team.ts             # leads, core, crew

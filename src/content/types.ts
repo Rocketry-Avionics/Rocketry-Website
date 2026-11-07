@@ -98,6 +98,17 @@ export interface SponsorPoint {
   body: string;
 }
 
+export interface FaqItem {
+  question: string;
+  /** Plain text only: it is also used for the FAQ structured data. */
+  answer: string;
+}
+
+export interface FaqGroup {
+  title: string;
+  items: FaqItem[];
+}
+
 export interface SponsorTier {
   name: string;
   tagline: string;

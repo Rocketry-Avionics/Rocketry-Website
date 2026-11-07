@@ -55,6 +55,12 @@ export default function Footer() {
               {link.label}
             </Link>
           ))}
+          <Link
+            href="/sponsor#faq"
+            className="w-fit text-sm text-muted transition-colors hover:text-flame"
+          >
+            Sponsor FAQ
+          </Link>
         </div>
 
         <div className="flex flex-col gap-2">

@@ -20,6 +20,7 @@ import { site } from "@/content/site";
 import { sponsor } from "@/content/sponsor";
 import type { SponsorIcon } from "@/content/types";
 import { emphasize } from "@/lib/emphasis";
+import Faq from "./Faq";
 import SponsorForm from "./SponsorForm";
 
 export const metadata: Metadata = {
@@ -74,6 +75,15 @@ export default function SponsorPage() {
               <ArrowRight className="h-4 w-4 rotate-90" aria-hidden="true" />
             </a>
           </div>
+          <p className="text-sm text-muted">
+            Wondering about paperwork or what you get?{" "}
+            <a
+              href="#faq"
+              className="font-semibold text-paper underline decoration-flame/60 underline-offset-2 transition-colors hover:text-flame"
+            >
+              Read the sponsor FAQ
+            </a>
+          </p>
         </div>
       </section>
 
@@ -177,7 +187,30 @@ export default function SponsorPage() {
         </div>
       </section>
 
-      <section id="reach-out" className="scroll-mt-20">
+      <section id="in-kind" className="scroll-mt-20 border-b border-line/60 bg-charcoal">
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1fr_1.1fr] lg:gap-14">
+          <SectionHeading
+            eyebrow={sponsor.inKind.eyebrow}
+            title={sponsor.inKind.title}
+            description={sponsor.inKind.description}
+          />
+          <ul className="grid content-start gap-3 sm:grid-cols-2">
+            {sponsor.inKind.items.map((item) => (
+              <li
+                key={item}
+                className="flex items-start gap-2.5 rounded-xl border border-line bg-surface/70 p-4 text-sm text-muted"
+              >
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-sky" aria-hidden="true" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <Faq />
+
+      <section id="reach-out" className="scroll-mt-20 bg-charcoal">
         <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1fr_1.1fr] lg:gap-14">
           <div className="flex flex-col gap-6">
             <SectionHeading
@@ -193,7 +226,12 @@ export default function SponsorPage() {
               {site.sponsorEmail}
             </a>
             <p className="text-sm text-muted">
-              Questions that are not about sponsorship? Head to our{" "}
+              Check the{" "}
+              <a href="#faq" className="font-semibold text-paper hover:text-flame">
+                FAQ
+              </a>{" "}
+              first, it may already have your answer. Questions that are not about
+              sponsorship? Head to our{" "}
               <Link href="/contact" className="font-semibold text-paper hover:text-flame">
                 contact page
               </Link>

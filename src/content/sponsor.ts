@@ -102,6 +102,20 @@ export const sponsor = {
       },
     ] as SponsorTier[],
   },
+  inKind: {
+    eyebrow: "Not just cash",
+    title: "In-kind support is just as welcome",
+    description:
+      "A fabrication run, a sensor kit or a software licence moves the build forward as much as a cheque does. If you can give products or services, tell us what you have.",
+    items: [
+      "PCB fabrication and assembly credits",
+      "Electronic components and sensors",
+      "Machining and 3D printing",
+      "Software licences for design and simulation",
+      "Tools and test equipment",
+      "Printing, logistics and media services",
+    ],
+  },
   cta: {
     eyebrow: "Get in touch",
     title: "Let's talk",

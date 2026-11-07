@@ -75,6 +75,15 @@ export default function SponsorPage() {
               <ArrowRight className="h-4 w-4 rotate-90" aria-hidden="true" />
             </a>
           </div>
+          <p className="text-sm text-muted">
+            Wondering about paperwork or what you get?{" "}
+            <a
+              href="#faq"
+              className="font-semibold text-paper underline decoration-flame/60 underline-offset-2 transition-colors hover:text-flame"
+            >
+              Read the sponsor FAQ
+            </a>
+          </p>
         </div>
       </section>
 
@@ -217,7 +226,12 @@ export default function SponsorPage() {
               {site.sponsorEmail}
             </a>
             <p className="text-sm text-muted">
-              Questions that are not about sponsorship? Head to our{" "}
+              Check the{" "}
+              <a href="#faq" className="font-semibold text-paper hover:text-flame">
+                FAQ
+              </a>{" "}
+              first, it may already have your answer. Questions that are not about
+              sponsorship? Head to our{" "}
               <Link href="/contact" className="font-semibold text-paper hover:text-flame">
                 contact page
               </Link>

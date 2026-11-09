@@ -42,7 +42,7 @@ Audiences: student recruits (freshers), sponsors, SEDS / fest visitors.
 | `/propulsion` | **Parked**: no page until official info is provided | Parked |
 | Legal/imprint | Added only if/when required | Parked |
 
-### Avionics page: the 6 projects (single route, anchored sections)
+### Avionics page: the 5 projects (single route, anchored sections)
 1. **Hardware Core**: custom 4-layer PCB in Altium; efficient + powerful MCU & sensors
    for flight data collection. Status badge: from real project state.
 2. **Software Core**: flight controller logic: data collection → preprocessing
@@ -58,7 +58,7 @@ Audiences: student recruits (freshers), sponsors, SEDS / fest visitors.
    eventual deployment on the flight MCU. **Badge: `In Progress`** (Unity 6 scene
    with rocket, spawn point and landing pad already scaffolded; ONNX/TFLite export
    and onboard deployment are `Planned` milestones inside the project).
-6. **Outreach**: leads + core members only; crew may repost.
+
 
 Each project section: status badge, one-paragraph summary, media placeholders,
 tech tags, anchor id for in-page nav.

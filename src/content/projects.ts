@@ -182,25 +182,4 @@ export const avionicsProjects: AvionicsProject[] = [
       },
     ],
   },
-  {
-    id: "outreach",
-    index: "06",
-    title: "Outreach",
-    status: "Active",
-    summary:
-      "Run by the leads and core members: public build logs, updates and event presence. Crew members contribute technically and help by reposting what we publish.",
-    points: [
-      "Public updates on LinkedIn",
-      "Build logs and milestones",
-      "Recruiting and campus presence",
-    ],
-    tags: ["LinkedIn", "Community"],
-    icon: "megaphone",
-    media: [
-      {
-        kind: "placeholder",
-        note: "Photos from worksessions and events will be added here.",
-      },
-    ],
-  },
 ];

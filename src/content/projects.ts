@@ -63,25 +63,38 @@ export const avionicsProjects: AvionicsProject[] = [
     summary:
       "The logic that drives the custom flight controller: collect data, preprocess it with filters, run real-time flight decisions, and record everything for post-flight analysis.",
     points: [
-      "Data acquisition from the onboard sensor suite",
-      "Preprocessing: filtering and sensor fusion",
-      "Real-time processing: TVC control, parachute deployment events",
-      "Post-processing: SD card logging, metrics, flight plots",
+      "Sense: every loop reads the onboard IMU and barometer",
+      "Filter: Kalman / complementary filtering to handle anomalous readings",
+      "Decide: PID control, TVC logic and parachute deployment logic",
+      "Log: flight data stored on SD card, then processed at the base station",
+      "Planned: GPS integration, ground station code and the self-landing RL model running in real time",
     ],
-    tags: ["C/C++", "Filtering", "Real-time", "SD Logging"],
+    tags: ["Arduino C++", "Filtering", "PID", "Real-time", "SD Logging"],
     icon: "code",
     timeline: [
       {
-        label: "v0 data collection firmware working",
+        label: "Full pipeline flight-tested on Teensy 4.1",
         detail:
-          "Fully working code collecting MPU6050 and BMP280 data over Teensy 4.1 on the v0 board.",
+          "Data collection, filtering, PID, TVC and parachute deployment logic, flight-tested on the Teensy 4.1 with MPU6050 and BMP280.",
         status: "Done",
       },
       {
-        label: "Flight pipeline growing",
+        label: "Moving to Portenta H7",
         detail:
-          "Filtering, real-time control (TVC, deployment events) and post-processing, moving toward the v1 Portenta H7 board.",
+          "Porting the code to the Portenta H7 with the MPU6500 and upgraded sensors, adapting the existing logic to the new components.",
         status: "In Progress",
+      },
+      {
+        label: "GPS integration and ground station code",
+        detail:
+          "Adding GPS to the flight computer and building the ground station software.",
+        status: "Planned",
+      },
+      {
+        label: "Self-landing RL on the flight computer",
+        detail:
+          "Integrating the RL policy so it runs in real time alongside the existing control logic.",
+        status: "Planned",
       },
     ],
     media: [

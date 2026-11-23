@@ -118,8 +118,34 @@ export const avionicsProjects: AvionicsProject[] = [
       "Data collection and transfer in both directions",
       "Base station side of the link",
     ],
-    tags: ["RF", "Telemetry", "Integration", "Test Rigs"],
+    tags: ["RF", "Telemetry", "Integration", "Test Rigs","LoRa"],
     icon: "radio",
+    timeline: [
+      {
+        label: "LoRa link bring-up",
+        detail:
+          "Getting two LoRa modules to exchange sample packets, which will become test data. Some board complications are being worked through.",
+        status: "In Progress",
+      },
+      {
+        label: "Basic data between LoRa modules",
+        detail:
+          "Getting the PCB working through sensor debugging and sending basic information between the two modules.",
+        status: "Planned",
+      },
+      {
+        label: "Packetisation and signal tuning",
+        detail:
+          "Structuring the data packets and tuning the signal properties, mostly software work.",
+        status: "Planned",
+      },
+      {
+        label: "Ground tests and antenna selection",
+        detail:
+          "Testing signal strength with the coil antennas, and swapping them if needed. The final antenna position on the rocket is still to be decided.",
+        status: "Planned",
+      },
+    ],
     media: [
       {
         kind: "placeholder",

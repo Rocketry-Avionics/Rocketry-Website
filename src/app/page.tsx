@@ -9,6 +9,7 @@ import LaunchZone from "@/components/launch-zone/LaunchZone";
 import FreeFlight from "@/components/launch-zone/FreeFlight";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { emphasize } from "@/lib/emphasis";
+import NewsList from "@/components/news/NewsList";
 
 export default function HomePage() {
   return (
@@ -124,6 +125,8 @@ export default function HomePage() {
           <SubsystemGrid />
         </div>
       </section>
+
+      <NewsList />
 
       <section>
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">

@@ -115,3 +115,9 @@ export interface SponsorTier {
   benefits: string[];
   featured?: boolean;
 }
+
+export interface NewsItem {
+  date: string;
+  text: string;
+  href?: string;
+}
